@@ -46,6 +46,19 @@
                         'permission.deleted' => $jatbi->lang("Xóa Nhóm quyền"),
                     ]
                 ],
+                'customer'=>[
+                    "menu"=>$jatbi->lang("Khách hàng"),
+                    "url"=>'/customer',
+                    "icon"=>'<i class="ti ti-user"></i>',
+                    "controllers"=>"controllers/core/customer.php",
+                    "main"=>'false',
+                    "permission"=>[
+                        'customer'=> $jatbi->lang("Khách hàng"),
+                        'customer.add' => $jatbi->lang("Thêm khách hàng"),
+                        'customer.edit' => $jatbi->lang("Sửa khách hàng"),
+                        'customer.deleted' => $jatbi->lang("Xóa khách hàng"),
+                    ]
+                ],
                 'admin'=>[
                     "menu"=>$jatbi->lang("Quản trị"),
                     "url"=>'/admin',
