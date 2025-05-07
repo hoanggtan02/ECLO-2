@@ -1,0 +1,93 @@
+<div class="modal fade modal-load" tabindex="-1" data-bs-backdrop="static">
+	<div class="modal-dialog modal-lg pt-standalone">
+		<div class="modal-content rounded-5">
+			<div class="d-flex w-100 justify-content-end align-items-center position-relative">
+				<button type="button" class="btn btn-primary position-absolute z-1 rounded-circle d-flex align-items-center justify-content-center width height top right" 
+					data-bs-dismiss="modal" aria-label="Close" 
+					style="--width:50px;--height:50px;--top:-5px;--right:-5px">
+					<i class="ti ti-x fs-4"></i>
+				</button>
+			</div>
+			<div class="modal-body">
+				<h5 class="fw-bold text-body mb-3"><?= $title ?></h5>
+				<form method="POST" action="<?= $_SERVER['REQUEST_URI'] ?>">
+					<div class="row g-3">
+						<!--ID -->
+						<input type="hidden" name="id_customer" value="<?= $data['id_customer'] ?? '' ?>">
+						<!-- Tên & Email -->
+						<div class="col-lg-6">
+							<label class="fw-bold text-body mb-2"><?= $jatbi->lang("Tên") ?> <span class="text-danger">*</span></label>
+							<input type="text" name="name" class="form-control py-3 rounded-4 bg-body-tertiary" placeholder="Nhập tên khách hàng" value="<?= $data['name'] ?? '' ?>">
+						</div>
+						<div class="col-lg-6">
+							<label class="fw-bold text-body mb-2">Email</label>
+							<input type="email" name="email" class="form-control py-3 rounded-4 bg-body-tertiary" placeholder="Nhập địa chỉ email" value="<?= $data['email'] ?? '' ?>">
+						</div>
+
+						<!-- Mã số thuế & Fax -->
+						<div class="col-lg-6">
+							<label class="fw-bold text-body mb-2"><?= $jatbi->lang("Mã số thuế") ?></label>
+							<input type="text" name="tax" class="form-control py-3 rounded-4 bg-body-tertiary" placeholder="Nhập mã số thuế" value="<?= $data['tax'] ?? '' ?>">
+						</div>
+						<div class="col-lg-6">
+							<label class="fw-bold text-body mb-2">Fax</label>
+							<input type="text" name="fax" class="form-control py-3 rounded-4 bg-body-tertiary" placeholder="Nhập số fax" value="<?= $data['fax'] ?? '' ?>">
+						</div>
+
+						<!-- Điện thoại & Website -->
+						<div class="col-lg-6">
+							<label class="fw-bold text-body mb-2"><?= $jatbi->lang("Điện thoại") ?></label>
+							<input type="text" name="phone" class="form-control py-3 rounded-4 bg-body-tertiary" placeholder="Nhập số điện thoại" value="<?= $data['phone'] ?? '' ?>">
+						</div>
+						<div class="col-lg-6">
+							<label class="fw-bold text-body mb-2">Website</label>
+							<input type="text" name="website" class="form-control py-3 rounded-4 bg-body-tertiary" placeholder="Nhập địa chỉ website" value="<?= $data['website'] ?? '' ?>">
+						</div>
+
+						<!-- Ngày sinh & Trạng thái -->
+						<div class="col-lg-6">
+							<label class="fw-bold text-body mb-2">Sinh nhật</label>
+							<input type="date" name="birthday" class="form-control py-3 rounded-4 bg-body-tertiary" placeholder="Chọn ngày sinh" value="<?= $data['birthday'] ?? '' ?>">
+						</div>
+						<div class="col-lg-6">
+							<label class="fw-bold text-body mb-2"><?= $jatbi->lang("Trạng thái") ?> <span class="text-danger">*</span></label>
+							<select name="status" class="form-select py-3 rounded-4 bg-body-tertiary">
+								<option value="1" <?= isset($data['status']) && $data['status'] == 1 ? 'selected' : '' ?>>Kích hoạt</option>
+								<option value="0" <?= isset($data['status']) && $data['status'] == 0 ? 'selected' : '' ?>>Không kích hoạt</option>
+							</select>
+						</div>
+
+						<!-- Địa chỉ -->
+						<div class="col-12">
+							<label class="fw-bold text-body mb-2"><?= $jatbi->lang("Địa chỉ") ?></label>
+							<input type="text" name="address" class="form-control py-3 rounded-4 bg-body-tertiary" placeholder="Nhập địa chỉ chi tiết" value="<?= $data['address'] ?? '' ?>">
+						</div>
+
+						<!-- Tỉnh / Huyện / Xã -->
+						<div class="col-lg-4">
+							<input type="text" class="form-control py-3 rounded-4 bg-body-tertiary" placeholder="Nhập tỉnh/thành phố">
+						</div>
+						<div class="col-lg-4">
+							<input type="text" class="form-control py-3 rounded-4 bg-body-tertiary" placeholder="Nhập quận/huyện">
+						</div>
+						<div class="col-lg-4">
+							<input type="text" class="form-control py-3 rounded-4 bg-body-tertiary" placeholder="Nhập phường/xã">
+						</div>
+
+						<!-- Ghi chú -->
+						<div class="col-12">
+							<label class="fw-bold text-body mb-2">Ghi chú</label>
+							<textarea name="note" rows="3" class="form-control py-3 rounded-4 bg-body-tertiary" placeholder="Nhập ghi chú thêm (nếu có)"><?= $data['note'] ?? '' ?></textarea>
+						</div>
+
+						<!-- Nút hành động -->
+						<div class="col-12 d-flex justify-content-end">
+							<button type="button" class="btn btn-light rounded-pill px-4 me-2" data-bs-dismiss="modal"><?= $jatbi->lang("Hủy") ?></button>
+							<button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold" data-action="submit" data-alert="true" data-load="this"><?= $jatbi->lang("Hoàn tất") ?></button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
