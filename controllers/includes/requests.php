@@ -105,8 +105,9 @@
                     "controllers"=>"controllers/core/project.php",
                     "main"=>'false',
                     "permission" => [
-                        'project'=>$jatbi->lang("Dự án"),
-
+                        'project'       =>$jatbi->lang("Dự án"),
+                        'project.add'   =>$jatbi->lang("Thêm dự án"),
+                        'project.edit'  =>$jatbi->lang("Sửa dự án"),
                     ],
                 ],
             ],
