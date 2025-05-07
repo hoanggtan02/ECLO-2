@@ -98,6 +98,18 @@
                         'trash'          =>$jatbi->lang("Thùng rác"),
                     ]
                 ],
+                'project'=>[
+                    "menu"=>$jatbi->lang("Dự án"),
+                    "url"=>'/project',
+                    "icon"  => '<i class="fa fa-list-alt"></i>',
+                    "controllers"=>"controllers/core/project.php",
+                    "main"=>'false',
+                    "permission" => [
+                        'project'       =>$jatbi->lang("Dự án"),
+                        'project.add'   =>$jatbi->lang("Thêm dự án"),
+                        'project.edit'  =>$jatbi->lang("Sửa dự án"),
+                    ],
+                ],
             ],
         ],
     ];
