@@ -1,0 +1,66 @@
+<div
+  class="card bg-body bg-opacity-50 card-custom shadow-sm border-0 rounded-2 mb-3"
+>
+  <div class="card-body flex-column">
+    <div class="card-rounded d-flex flex-stack flex-wrap">
+      <ul class="nav flex-wrap border-transparent fw-bold">
+        <li class="nav-item my-0">
+          <a
+            class="btn fw-bold border-0 <?=$active=='department'?'text-primary':''?>"
+            href="/staffConfiguration/department"
+            data-pjax
+            >Phòng ban</a
+          >
+        </li>
+        <li class="nav-item my-0">
+          <a
+            class="btn fw-bold border-0 <?=$active=='position'?'text-primary':''?>"
+            href="/staffConfiguration/position "
+            data-pjax
+            >Chức vụ</a
+          >
+        </li>
+        <li class="nav-item my-0">
+          <a
+            class="btn fw-bold border-0 <?=$active=='salary'?'text-primary':''?>"
+            href="/staffConfiguration/salary"
+            data-pjax
+            >Tiền lương</a
+          >
+        </li>
+        <li class="nav-item my-0">
+          <a
+            class="btn fw-bold border-0 <?=$active=='latetime'?'text-primary':''?>"
+            href="/staffConfiguration/latetime "
+            data-pjax
+            >Đi trễ về sớm</a
+          >
+        </li>
+        <li class="nav-item my-0">
+          <a
+            class="btn fw-bold border-0 <?=$active=='timeperiod'?'text-primary':''?>"
+            href="/staffConfiguration/timeperiod "
+            data-pjax
+            >Thời gian làm việc</a
+          >
+        </li>
+        <li class="nav-item my-0">
+          <a
+            class="btn fw-bold border-0 <?=$active=='leavetypes'?'text-primary':''?>"
+            href="/staffConfiguration/leavetypes "
+            data-pjax
+            >Nghỉ phép</a
+          >
+        </li>
+        <li class="nav-item my-0">
+          <a
+            class="btn fw-bold border-0 <?=$active=='holiday'?'text-primary':''?>"
+            href="/staffConfiguration/holiday "
+            data-pjax
+            >Ngày lễ</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
