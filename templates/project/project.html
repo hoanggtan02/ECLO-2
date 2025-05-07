@@ -60,7 +60,7 @@
 		<div class="card-body">
             <div class="custom-buttons d-none">
                 <div class="d-flex align-items-center justify-content-end">
-                    <button class="btn rounded-pill btn-sm btn-primary d-flex align-items-center me-1" data-action="modal" data-url="/project/project-add"><i class="ti ti-plus fs-6 me-1" aria-hidden="true"></i> <?=$jatbi->lang("Thêm")?></button>
+                    <button class="btn rounded-pill btn-sm btn-primary d-flex align-items-center me-1" data-action="modal" data-url="/project-add"><i class="ti ti-plus fs-6 me-1" aria-hidden="true"></i> <?=$jatbi->lang("Thêm")?></button>
                     <button class="btn rounded-pill btn-sm btn-danger d-flex align-items-center" data-action="modal" data-checkbox="input.checker" data-url="/users/accounts-deleted"><i class="ti ti-trash fs-6 me-1" aria-hidden="true"></i> <?=$jatbi->lang("Xóa")?></button>
                 </div>
             </div>
@@ -80,8 +80,8 @@
                         <th data-name="checkbox" data-orderable="false" class="text-nowrap " data-visible="true" data-class="text-center"><div class="form-check"><input class="form-check-input checkall" type="checkbox" value="" data-checkbox="input.checker"></div></th>
                         <th data-name="name" data-orderable="true" class="text-nowrap " data-visible="true" data-class="text-nowrap"><?=$jatbi->lang("Tên")?></th>
                         <th data-name="customer" data-orderable="true" class="text-nowrap " data-visible="true" data-class=""><?=$jatbi->lang("Khách hàng")?></th>
-                        <th data-name="startDate" data-orderable="true" class="text-nowrap " data-visible="true" data-class="text-nowrap"><?=$jatbi->lang("Ngày bắt đầu")?></th>
-                        <th data-name="endDate" data-orderable="true" class="text-nowrap " data-visible="true" data-class="text-nowrap"><?=$jatbi->lang("Ngày kết thúc")?></th>
+                        <th data-name="startDate" data-orderable="true" class="text-nowrap " data-visible="true" data-class="text-start"><?=$jatbi->lang("Ngày bắt đầu")?></th>
+                        <th data-name="endDate" data-orderable="true" class="text-nowrap " data-visible="true" data-class="text-start"><?=$jatbi->lang("Ngày kết thúc")?></th>
                         <th data-name="status" data-orderable="false" class="text-nowrap " data-visible="true" data-class="text-center"><?=$jatbi->lang("Trạng thái")?></th>
                         <th data-name="action" data-orderable="false" class="text-nowrap " data-visible="true" data-class="text-end"><?=$jatbi->lang("Tùy chọn")?></th>
                     </tr>
