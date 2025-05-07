@@ -14,81 +14,86 @@
                 ],
             ],
         ],
-        "personnel"=>[
-            "name"=>'Nhân sự',
+        "page"=>[
+            "name"=>'Admin',
             "item"=>[
-                'hr_config'=>[
-                    "menu"=>$jatbi->lang("Cấu hình nhân sự"),
-                    "url"=>'/staffConfiguration/department',
-                    "icon"=>'<i class="ti ti-settings"></i>',
-                    "controllers" => [
-                        "controllers/core/staffConfiguration.php",
-                        "controllers/core/latetime.php",
-                        "controllers/core/timeperiod.php",
-                        "controllers/core/leavetype.php",
+                'users'=>[
+                    "menu"=>$jatbi->lang("Người dùng"),
+                    "url"=>'/users',
+                    "icon"=>'<i class="ti ti-user "></i>',
+                    "sub"=>[
+                        'accounts'      =>[
+                            "name"  => $jatbi->lang("Tài khoản"),
+                            "router"=> '/users/accounts',
+                            "icon"  => '<i class="ti ti-user"></i>',
+                        ],
+                        'permission'    =>[
+                            "name"  => $jatbi->lang("Nhóm quyền"),
+                            "router"=> '/users/permission',
+                            "icon"  => '<i class="fas fa-universal-access"></i>',
+                        ],
                     ],
+                    "controllers"=>"controllers/core/users.php",
                     "main"=>'false',
-                    "permission" => [
-                        'staffConfiguration'=>$jatbi->lang("Cấu hình nhân sự"),
-                        'staffConfiguration-department.add'=>$jatbi->lang("Thêm nhân sự"),
-                        'staffConfiguration-department.edit'=>$jatbi->lang("sửa nhân sự"),
-                        'staffConfiguration-department.delete'=>$jatbi->lang("Xóa nhân sự"),
-                        'staffConfiguration-position'=>$jatbi->lang("Chức vụ"),
-                        'staffConfiguration-position.add'=>$jatbi->lang("Thêm chức vụ"),
-                        'staffConfiguration-position.edit'=>$jatbi->lang("sửa chức vụ"),
-                        'staffConfiguration-position.delete'=>$jatbi->lang("Xóa chức vụ"),
-                        'staffConfiguration-salary'=>$jatbi->lang("Tiền lương"),
-                        'staffConfiguration-salary.add'=>$jatbi->lang("Thêm tiền lương"),
-                        'staffConfiguration-salary.edit'=>$jatbi->lang("sửa tiền lương"),
-                        'staffConfiguration-salary.delete'=>$jatbi->lang("Xóa tiền lương"),
-                        'staffConfiguration-holiday'=>$jatbi->lang("Ngày lễ"),
-                        'staffConfiguration-holiday.add'=>$jatbi->lang("Thêm ngày lễ"),
-                        'staffConfiguration-holiday.edit'=>$jatbi->lang("sửa ngày lễ"),
-                        'staffConfiguration-holiday.delete'=>$jatbi->lang("Xóa ngày lễ"),  
-                        'timeperiod' => $jatbi->lang("Khung thời gian"),
-                        'timeperiod.add' => $jatbi->lang("Thêm Khung thời gian"),
-                        'timeperiod.edit' => $jatbi->lang("Sửa Khung thời gian"),
-                        'timeperiod.deleted' => $jatbi->lang("Xóa Khung thời gian"),
-                        'leavetype' => $jatbi->lang("Loại nghỉ phép"),
-                        'leavetype.add' => $jatbi->lang("Thêm Loại nghỉ phép"),
-                        'leavetype.edit' => $jatbi->lang("Sửa Loại nghỉ phép"),
-                        'leavetype.deleted' => $jatbi->lang("Xóa Loại nghỉ phép"),
-                        'latetime' => $jatbi->lang("Đi muộn về sớm"),
-                        'latetime.add' => $jatbi->lang("Thêm Đi muộn về sớm"),
-                        'latetime.edit' => $jatbi->lang("Sửa Đi muộn về sớm"),
-                        'latetime.deleted' => $jatbi->lang("Xóa Đi muộn về sớm"),
-
+                    "permission"=>[
+                        'accounts'=> $jatbi->lang("Tài khoản"),
+                        'accounts.add' => $jatbi->lang("Thêm tài khoản"),
+                        'accounts.edit' => $jatbi->lang("Sửa tài khoản"),
+                        'accounts.deleted' => $jatbi->lang("Xóa tài khoản"),
+                        'permission'=> $jatbi->lang("Nhóm quyền"),
+                        'permission.add' => $jatbi->lang("Thêm Nhóm quyền"),
+                        'permission.edit' => $jatbi->lang("Sửa Nhóm quyền"),
+                        'permission.deleted' => $jatbi->lang("Xóa Nhóm quyền"),
+                    ]
+                ],
+                'admin'=>[
+                    "menu"=>$jatbi->lang("Quản trị"),
+                    "url"=>'/admin',
+                    "icon"=>'<i class="ti ti-settings "></i>',
+                    "sub"=>[
+                        'blockip'   => [
+                            "name"  => $jatbi->lang("Chặn truy cập"),
+                            "router"    => '/admin/blockip',
+                            "icon"  => '<i class="fas fa-ban"></i>',
+                        ],
+                        'trash'  => [
+                            "name"  => $jatbi->lang("Thùng rác"),
+                            "router"    => '/admin/trash',
+                            "icon"  => '<i class="fa fa-list-alt"></i>',
+                        ],
+                        'logs'  => [
+                            "name"  => $jatbi->lang("Nhật ký"),
+                            "router"    => '/admin/logs',
+                            "icon"  => '<i class="fa fa-list-alt"></i>',
+                        ],
+                        'config'    => [
+                            "name"  => $jatbi->lang("Cấu hình"),
+                            "router"    => '/admin/config',
+                            "icon"  => '<i class="fa fa-cog"></i>',
+                            "req"   => 'modal-url',
+                        ],
                     ],
+                    "controllers"=>"controllers/core/admin.php",
+                    "main"=>'false',
+                    "permission"=>[
+                        'blockip'       =>$jatbi->lang("Chặn truy cập"),
+                        'blockip.add'   =>$jatbi->lang("Thêm Chặn truy cập"),
+                        'blockip.edit'  =>$jatbi->lang("Sửa Chặn truy cập"),
+                        'blockip.deleted'=>$jatbi->lang("Xóa Chặn truy cập"),
+                        'config'        =>$jatbi->lang("Cấu hình"),
+                        'logs'          =>$jatbi->lang("Nhật ký"),
+                        'trash'          =>$jatbi->lang("Thùng rác"),
+                    ]
                 ],
             ],
         ],
     ];
     foreach($requests as $request){
         foreach($request['item'] as $key_item =>  $items){
-            if (is_array($items['controllers'])) {
-                foreach($items['controllers'] as $controller) {
-                    $setRequest[] = [
-                        "key" => $key_item,
-                        "controllers" => $controller,
-                    ];
-                }
-            } else {
-                $setRequest[] = [
-                    "key" => $key_item,
-                    "controllers" => $items['controllers'],
-                ];
-            }
-            // Thêm controllers từ sub
-            if (isset($items['sub']) && is_array($items['sub'])) {
-                foreach ($items['sub'] as $sub_key => $sub_item) {
-                    if (isset($sub_item['controllers'])) {
-                        $setRequest[] = [
-                            "key" => $sub_key,
-                            "controllers" => $sub_item['controllers'],
-                        ];
-                    }
-                }
-            }
+            $setRequest[] = [
+                "key" => $key_item,
+                "controllers" =>  $items['controllers'],
+            ];
             if($items['main']!='true'){
                 $SelectPermission[$items['menu']] = $items['permission'];
             }
