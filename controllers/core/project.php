@@ -68,14 +68,14 @@ $app->router("/project", 'POST', function($vars) use ($app, $jatbi) {
             "customer"  => $data['name_customer'],
             "startDate" => $data['startDate'],
             "endDate"   => $data['endDate'],
-            "status"    => $app->component("status",["url"=>"/staffConfiguration/department-status/".$data['id'],"data"=>$data['status'],"permission"=>['project.edit']]),
+            "status"    => $app->component("status",["url"=>"/project-status/".$data['id'],"data"=>$data['status'],"permission"=>['project.edit']]),
             "action" => $app->component("action",[
                 "button" => [
                     [
                         'type' => 'button',
-                        'name' => $jatbi->lang("Xem ảnh"),
-                        'permission' => ['record'],
-                        'action' => ['data-url' => '/record-viewimage?box='.$data['id'], 'data-action' => 'modal']
+                        'name' => $jatbi->lang("Sửa"),
+                        'permission' => ['project.edit'],
+                        'action' => ['data-url' => '/project-edit/'.$data['id'], 'data-action' => 'modal']
                     ],
                     [
                         'type' => 'button',
@@ -95,19 +95,105 @@ $app->router("/project", 'POST', function($vars) use ($app, $jatbi) {
         "data" => $datas ?? [],
     ]);
 
-})->setPermissions(['project']);
+})->setPermissions(['project.add']);
 
-$app->router("/project/project-add", 'GET', function($vars) use ($app, $jatbi) {
-    $vars['title'] = $jatbi->lang("Thêm Tài khoản");
-    $vars['permissions'] = $app->select("permissions","*",["deleted"=>0,"status"=>"A"]);
+$app->router("/project-status/{id}", 'POST', function($vars) use ($app, $jatbi) {
+    $app->header([
+        'Content-Type' => 'application/json',
+    ]);
+    $data = $app->get("project","*",["id"=>$vars['id']]);
+    if($data>1){
+        if($data>1){
+            if($data['status']==='A'){
+                $status = "D";
+            } 
+            elseif($data['status']==='D'){
+                $status = "A";
+            }
+            $app->update("project",["status"=>$status],["id"=>$data['id']]);
+            // $jatbi->logs('staffConfiguration','salary-status',$data);
+            echo json_encode(['status'=>'success','content'=>$jatbi->lang("Cập nhật thành công")]);
+        }
+        else {
+            echo json_encode(['status'=>'error','content'=>$jatbi->lang("Cập nhật thất bại"),]);
+        }
+    }
+    else {
+        echo json_encode(["status"=>"error","content"=>$jatbi->lang("Không tìm thấy dữ liệu")]);
+    }
+})->setPermissions(['project.edit']);
+
+$app->router("/project-add", 'GET', function($vars) use ($app, $jatbi) {
+    $vars['title'] = $jatbi->lang("Thêm Dự án");
     $vars['customers'] = $app->select("customer","*");
     $vars['data'] = [
         "id_customer" => 'A',
         "status" => 'A',
-        "permission" => '',
-        "gender" => '',
     ];
     echo $app->render('templates/project/project-post.html', $vars, 'global');
 })->setPermissions(['project.add']);
+
+$app->router("/project-add", 'POST', function($vars) use ($app, $jatbi) {
+    $app->header([
+        'Content-Type' => 'application/json',
+    ]);
+    if($app->xss($_POST['name']) == '' || $app->xss($_POST['customer']??'') == '' || $app->xss($_POST['startDate']) == '' || $app->xss($_POST['endDate']) == '') {
+        echo json_encode(["status"=>"error","content"=>$jatbi->lang("Vui lòng nhập các trường bắt buộc.")]);
+        exit;
+    }
+    if($app->xss($_POST['startDate']) > $app->xss($_POST['endDate'])) {
+        echo json_encode(["status"=>"error","content"=>$jatbi->lang("Ngày bắt đầu không được lớn hơn ngày kết thúc.")]);
+        exit;
+    }
+    $insert = [
+        "name_project"  => $app->xss($_POST['name']),
+        "id_customer"   => $app->xss($_POST['customer']),
+        "startDate"     => $app->xss($_POST['startDate']),
+        "endDate"       => $app->xss($_POST['endDate']),
+        "status"        => $app->xss($_POST['status']),
+    ];
+    $app->insert("project",$insert);
+    $jatbi->logs('project','project-add',$insert);
+    echo json_encode(['status'=>'success','content'=>$jatbi->lang("Thêm thành công.")]);
+    exit;
+
+})->setPermissions(['project.add']);
+
+$app->router("/project-edit/{id}", 'GET', function($vars) use ($app, $jatbi, $setting) {
+    $vars['title'] = $jatbi->lang("Sửa Dự án");
+    $vars['customers'] = $app->select("customer","*");
+    $vars['data'] = $app->get("project","*",["id"=>$vars['id']]);
+    if($vars['data']>1){
+        echo $app->render('templates/project/project-post.html', $vars, 'global');
+    }
+    else {
+        echo $app->render('templates/common/error-modal.html', $vars, 'global');
+    }
+})->setPermissions(['project.edit']);
+
+$app->router("/project-edit/{id}", 'POST', function($vars) use ($app, $jatbi, $setting) {
+    $app->header([
+        'Content-Type' => 'application/json',
+    ]);
+    if($app->xss($_POST['name']) == '' || $app->xss($_POST['customer']??'') == '' || $app->xss($_POST['startDate']) == '' || $app->xss($_POST['endDate']) == '') {
+        echo json_encode(["status"=>"error","content"=>$jatbi->lang("Vui lòng nhập các trường bắt buộc.")]);
+        exit;
+    }
+    if($app->xss($_POST['startDate']) > $app->xss($_POST['endDate'])) {
+        echo json_encode(["status"=>"error","content"=>$jatbi->lang("Ngày bắt đầu không được lớn hơn ngày kết thúc.")]);
+        exit;
+    }
+    $insert = [
+        "name_project"  => $app->xss($_POST['name']),
+        "id_customer"   => $app->xss($_POST['customer']),
+        "startDate"     => $app->xss($_POST['startDate']),
+        "endDate"       => $app->xss($_POST['endDate']),
+        "status"        => $app->xss($_POST['status']),
+    ];
+    $app->update("project",$insert,["id"=>$vars['id']]);
+    // $jatbi->logs('staffConfiguration','salary-edit id = ' . $vars['id'] ,$insert);
+    echo json_encode(['status'=>'success','content'=>$jatbi->lang("Cập nhật thành công")]);
+    exit;
+})->setPermissions(['project.edit']);
 
 ?>
