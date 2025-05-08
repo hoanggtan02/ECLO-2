@@ -1,0 +1,35 @@
+<div
+  class="card bg-body bg-opacity-50 card-custom shadow-sm border-0 rounded-2 mb-3"
+>
+  <div class="card-body flex-column ">
+    <div class="card-rounded d-flex flex-stack flex-wrap ">
+      <ul class="nav flex-wrap border-transparent fw-bold">
+        <li class="nav-item my-0">
+          <a
+            class="btn fw-bold border-0 <?=$active2=='face'?'text-primary':''?>"
+            href="/projects/projects-views/logs/logs-face?id=<?=$id?>"
+            data-pjax
+            >NHẬT KÝ NHẬN DIỆN</a
+          >
+        </li>
+        <li class="nav-item my-0">
+          <a
+            class="btn fw-bold border-0 <?=$active2=='camera'?'text-primary':''?>"
+            href="/projects/projects-views/logs/logs-camera?id=<?=$id?>"
+            data-pjax
+            >NHẬT KÝ CAMERA</a
+          >
+        </li>
+        <li class="nav-item my-0">
+          <a
+            class="btn fw-bold border-0 <?=$active2=='webhook'?'text-primary':''?>"
+            href="/projects/projects-views/logs/logs-webhook?id=<?=$id?>"
+            data-pjax
+            >NHẬT KÝ WEBHOOK</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+</div>
