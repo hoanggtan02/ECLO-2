@@ -102,7 +102,17 @@
                     "menu"=>$jatbi->lang("Dự án"),
                     "url"=>'/project',
                     "icon"  => '<i class="fa fa-list-alt"></i>',
-                    "controllers"=>"controllers/core/project.php",
+                    "controllers" => [
+                        "controllers/core/project.php",
+                        "controllers/core/projectDetail/projectDetail.php",
+                        "controllers/core/projectDetail/projectDetail-area.php",
+                        "controllers/core/projectDetail/projectDetail-camera.php",
+                        "controllers/core/projectDetail/projectDetail-face.php",
+                        "controllers/core/projectDetail/projectDetail-setting.php",
+                        "controllers/core/projectDetail/projectDetail-logs/projectDetail-logsCamera.php",
+                        "controllers/core/projectDetail/projectDetail-logs/projectDetail-logsFace.php",
+                        "controllers/core/projectDetail/projectDetail-logs/projectDetail-logsWebhook.php",
+                    ],
                     "main"=>'false',
                     "permission" => [
                         'project'=>$jatbi->lang("Dự án"),
@@ -114,10 +124,30 @@
     ];
     foreach($requests as $request){
         foreach($request['item'] as $key_item =>  $items){
-            $setRequest[] = [
-                "key" => $key_item,
-                "controllers" =>  $items['controllers'],
-            ];
+            if (is_array($items['controllers'])) {
+                foreach($items['controllers'] as $controller) {
+                    $setRequest[] = [
+                        "key" => $key_item,
+                        "controllers" => $controller,
+                    ];
+                }
+            } else {
+                $setRequest[] = [
+                    "key" => $key_item,
+                    "controllers" => $items['controllers'],
+                ];
+            }
+            // Thêm controllers từ sub
+            if (isset($items['sub']) && is_array($items['sub'])) {
+                foreach ($items['sub'] as $sub_key => $sub_item) {
+                    if (isset($sub_item['controllers'])) {
+                        $setRequest[] = [
+                            "key" => $sub_key,
+                            "controllers" => $sub_item['controllers'],
+                        ];
+                    }
+                }
+            }
             if($items['main']!='true'){
                 $SelectPermission[$items['menu']] = $items['permission'];
             }
