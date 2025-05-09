@@ -25,12 +25,12 @@ $app->router("/projects/projects-views", 'GET', function($vars) use ($app, $jatb
     $vars['active'] = 'projects-views';
     $vars['id'] = $id;
     echo $app->render('templates/project/projectDetail/projectDetail.html', $vars);
-})->setPermissions(['Project']);
+})->setPermissions(['project']);
 
 // Route để xử lý yêu cầu POST từ DataTables và trả về dữ liệu JSON
 $app->router("/projects/projects-views", 'POST', function($vars) use ($app, $jatbi) {
     
-})->setPermissions(['Project']);
+})->setPermissions(['project']);
 
 
 

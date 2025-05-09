@@ -25,6 +25,6 @@ $app->router("/projects/projects-views/logs/logs-camera", 'GET', function($vars)
         $vars['project'] = null;
     }
     echo $app->render('templates/project/projectDetail/projectDetail-logs/projectDetail-log-logsCamera.html', $vars);
-})->setPermissions(['Project']);
+})->setPermissions(['project']);
 
 ?>

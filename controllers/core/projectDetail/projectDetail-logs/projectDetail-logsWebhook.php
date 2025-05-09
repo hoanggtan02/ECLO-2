@@ -25,6 +25,6 @@ $app->router("/projects/projects-views/logs/logs-webhook", 'GET', function($vars
         $vars['project'] = null;
     }
     echo $app->render('templates/project/projectDetail/projectDetail-logs/projectDetail-log-logsWebhook.html', $vars);
-})->setPermissions(['Project']);
+})->setPermissions(['project']);
 
 ?>
