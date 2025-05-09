@@ -56,6 +56,7 @@ $app->router("/project", 'POST', function($vars) use ($app, $jatbi) {
         "[>]customer" => ["id_customer" => "id"],
     ],[
         'project.id',
+        'project.id_project',
         'project.name_project',
         'customer.name (name_customer)',
         'project.startDate',
@@ -71,6 +72,12 @@ $app->router("/project", 'POST', function($vars) use ($app, $jatbi) {
             "status"    => $app->component("status",["url"=>"/project-status/".$data['id'],"data"=>$data['status'],"permission"=>['project.edit']]),
             "action" => $app->component("action",[
                 "button" => [
+                    [
+                        'type' => 'link', // Changed from 'button' to 'link' for clarity
+                        'name' => $jatbi->lang("Xem chi tiết"),
+                        'permission' => ['project'],
+                        'action' => ['href' => '/projects/projects-views?id=' . $data['id_project']] // Use 'href' for navigation
+                    ],
                     [
                         'type' => 'button',
                         'name' => $jatbi->lang("Sửa"),
