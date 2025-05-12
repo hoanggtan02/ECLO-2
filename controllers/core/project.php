@@ -5,7 +5,6 @@ $setting = $app->getValueData('setting');
 
 $app->router("/project", 'GET', function($vars) use ($app, $jatbi, $setting) {
     $vars['title'] = $jatbi->lang("Dự án");
-    $vars['customers'] = $app->select("customer","*");
     $vars['customers'] = $app->select("customer",["name (text)","id (value)"]);
     echo $app->render('templates/project/project.html', $vars);
 })->setPermissions(['project']);
@@ -23,7 +22,7 @@ $app->router("/project", 'POST', function($vars) use ($app, $jatbi) {
 
     $customers = isset($_POST['customers']) ? $_POST['customers'] : '';
     $status = isset($_POST['status']) ? [$_POST['status'],$_POST['status']] : '';
-    $startDate1 = isset($_POST['startDate1']) ? $_POST['startDate1'] : '';
+    $startDate = isset($_POST['startDate']) ? $_POST['startDate'] : '';
     $endDate = isset($_POST['endDate']) ? $_POST['endDate'] : '';
 
     $where = [
@@ -41,13 +40,12 @@ $app->router("/project", 'POST', function($vars) use ($app, $jatbi) {
     if(!empty($customers)) {
         $where["AND"]["project.id_customer"] = $customers;
     }
-    if(!empty($startDate1)) {
-        $startDate1 = DateTime::createFromFormat('d/m/Y', $startDate1)->format('Y-m-d');
-        $where["AND"]["project.startDate[>=]"] = '2025-05-01';
+    if(!empty($startDate)) {
+        $where["AND"]["project.startDate[>=]"] = $startDate;
     }
-    // if(!empty($endDate)) {
-    //     $where["AND"]["project.id_customer"] = $endDate;
-    // }
+    if(!empty($endDate)) {
+        $where["AND"]["project.endDate[<=]"] = $endDate;
+    }
     
     $count = $app->count("project",[
         "AND" => $where['AND'],
@@ -58,7 +56,7 @@ $app->router("/project", 'POST', function($vars) use ($app, $jatbi) {
         'project.id',
         'project.id_project',
         'project.name_project',
-        'customer.name (name_customer)',
+        'customer.name (customer)',
         'project.startDate',
         'project.endDate',
         'project.status',
@@ -66,9 +64,9 @@ $app->router("/project", 'POST', function($vars) use ($app, $jatbi) {
         $datas[] = [
             "checkbox"  => $app->component("box",["data"=>$data['id']]),
             "name"      => $data['name_project'],
-            "customer"  => $data['name_customer'],
-            "startDate" => $data['startDate'],
-            "endDate"   => $data['endDate'],
+            "customer"  => $data['customer'],
+            "startDate" => DateTime::createFromFormat('Y-m-d', $data['startDate'])->format('d-m-Y'),
+            "endDate"   => DateTime::createFromFormat('Y-m-d', $data['endDate'])->format('d-m-Y'),
             "status"    => $app->component("status",["url"=>"/project-status/".$data['id'],"data"=>$data['status'],"permission"=>['project.edit']]),
             "action" => $app->component("action",[
                 "button" => [
