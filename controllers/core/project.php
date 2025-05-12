@@ -5,6 +5,8 @@ $setting = $app->getValueData('setting');
 
 $app->router("/project", 'GET', function($vars) use ($app, $jatbi, $setting) {
     $vars['title'] = $jatbi->lang("Dự án");
+    $vars['customers'] = $app->select("customer","*");
+    $vars['customers'] = $app->select("customer",["name (text)","id (value)"]);
     echo $app->render('templates/project/project.html', $vars);
 })->setPermissions(['project']);
 
@@ -19,10 +21,10 @@ $app->router("/project", 'POST', function($vars) use ($app, $jatbi) {
     $orderName = isset($_POST['order'][0]['name']) ? $_POST['order'][0]['name'] : 'name';
     $orderDir = isset($_POST['order'][0]['dir']) ? $_POST['order'][0]['dir'] : 'DESC';
 
-    // $startTime = $app->xss($_POST['startTime'] ?? "");
-    // $endTime = $app->xss($_POST['endTime'] ?? "");
-    // $personSn = $app->xss($_POST['personSn'] ?? "");
-    // $personType = $app->xss($_POST['personType'] ?? "");
+    $customers = isset($_POST['customers']) ? $_POST['customers'] : '';
+    $status = isset($_POST['status']) ? [$_POST['status'],$_POST['status']] : '';
+    $startDate1 = isset($_POST['startDate1']) ? $_POST['startDate1'] : '';
+    $endDate = isset($_POST['endDate']) ? $_POST['endDate'] : '';
 
     $where = [
         "AND" => [
@@ -30,23 +32,21 @@ $app->router("/project", 'POST', function($vars) use ($app, $jatbi) {
                 "project.id[~]" => $searchValue,
                 "project.name_project[~]" => $searchValue,
             ],
+            "project.status[<>]" => $status,
         ],
         "LIMIT" => [$start, $length],
         "ORDER" => [$orderName => strtoupper($orderDir)]
     ];
     
-    // if(!empty($startTime)) {
-    //     $where["AND"]["record.createTime[>=]"] = $startTime;
-    // }
-    // if(!empty($endTime)) {
-    //     $endTime = date("Y-m-d", strtotime($endTime . " +1 day"));
-    //     $where["AND"]["record.createTime[<=]"] = $endTime;
-    // }
-    // if(!empty($personSn)) {
-    //     $where["AND"]["record.personSn"] = $personSn;
-    // }
-    // if($personType > -1) {
-    //     $where["AND"]["record.personType"] = $personType;
+    if(!empty($customers)) {
+        $where["AND"]["project.id_customer"] = $customers;
+    }
+    if(!empty($startDate1)) {
+        $startDate1 = DateTime::createFromFormat('d/m/Y', $startDate1)->format('Y-m-d');
+        $where["AND"]["project.startDate[>=]"] = '2025-05-01';
+    }
+    // if(!empty($endDate)) {
+    //     $where["AND"]["project.id_customer"] = $endDate;
     // }
     
     $count = $app->count("project",[
