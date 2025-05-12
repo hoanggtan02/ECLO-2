@@ -27,4 +27,87 @@ $app->router("/projects/projects-views/logs/logs-camera", 'GET', function($vars)
     echo $app->render('templates/project/projectDetail/projectDetail-logs/projectDetail-log-logsCamera.html', $vars);
 })->setPermissions(['project']);
 
+$app->router("/projects/projects-views/logs/logs-camera", 'POST', function($vars) use ($app, $jatbi) {
+    $app->header(['Content-Type' => 'application/json']);
+    $draw = isset($_POST['draw']) ? intval($_POST['draw']) : 0;
+    $start = isset($_POST['start']) ? intval($_POST['start']) : 0;
+    $length = isset($_POST['length']) ? intval($_POST['length']) : 10;
+    $orderName = isset($_POST['order'][0]['name']) ? $_POST['order'][0]['name'] : 'date';
+    $orderDir = isset($_POST['order'][0]['dir']) ? $_POST['order'][0]['dir'] : 'desc';
+    $id = $_GET['id'] ?? '';
+
+    $where = [
+        "AND" => [
+            "logs.dispatch" => 'camera',
+            "logs.deleted" => 0,
+        ],
+        "LIMIT" => [$start, $length],
+        "ORDER" => [$orderName => strtoupper($orderDir)]
+    ];
+
+    // Đếm số bản ghi
+    $count = $app->count("logs", $where['AND']);
+    error_log("Count: " . $count);
+
+    // Lấy dữ liệu mà không dùng callback
+    $results = $app->select("logs", [
+        'logs.id',
+        'logs.action',
+        'logs.date',
+        'logs.content',
+    ], $where);
+
+    error_log("Raw results: " . json_encode($results));
+
+    $datas = [];
+    foreach ($results as $data) {
+        $content = json_decode($data['content'], true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            error_log("JSON decode error: " . json_last_error_msg() . " for content: " . ($data['content'] ?? 'empty'));
+            $content = [];
+        }
+        error_log("Parsed content: " . json_encode($content));
+        $datas[] = [
+            "action" => $data['action'] ?? 'N/A',
+            "area" => $content['area'] ?? 'N/A',
+            "camera" => $content['camera'] ?? 'N/A',
+            "result" => $content['result'] ?? 'N/A',
+            "content" => $content['description'] ?? 'N/A',
+            "day" => $data['date'] ?? '',
+        ];
+    }
+
+    error_log("Final data: " . json_encode($datas));
+    echo json_encode([
+        "draw" => $draw,
+        "recordsTotal" => $count,
+        "recordsFiltered" => $count,
+        "data" => $datas ?? []
+    ]);
+})->setPermissions(['project']);
+
+function addFaceRecognition($app, $jatbi, $cameraId, $imageUrl) {
+    // Lấy thông tin khu vực và camera
+    $camera = $app->get("camera", "*", ["id" => $cameraId]);
+    $area = $app->get("area", "name", ["id" => $camera['area_id']]);
+
+    // Chuẩn bị dữ liệu log
+    $logContent = [
+        "description" => "Thêm thành công",
+        "type" => "Nhận diện khuôn mặt",
+        "area" => $area['name'] ?? 'N/A',
+        "camera" => $camera['id'] ?? 'N/A',
+        "image" => $imageUrl,
+        "result" => "1",
+    ];
+
+    // Ghi log
+    $jatbi->logs('camera', 'addface', $logContent);
+
+    
+}
+
+$app->router("/projects/test", 'GET', function($vars) use ($app, $jatbi) {
+    addFaceRecognition($app, $jatbi, "77ed8738f236e8df86", "");
+})->setPermissions(['project']);
 ?>
