@@ -133,7 +133,6 @@ $app->router("/projects/projects-views/setting-webhook", 'POST', function($vars)
 
 $app->router("/api/webhook", 'POST', function($vars) use ($app, $jatbi) {
 
-})->setPermissions(['project']);
     $app->header(['Content-Type' => 'application/json']);
 
     // Lấy dữ liệu từ request
@@ -216,4 +215,6 @@ $app->router("/api/webhook", 'POST', function($vars) use ($app, $jatbi) {
         "faceFlag"       => $faceFlag
     ];
     $app->insert("record", $insert);
+})->setPermissions(['project']);
+
 ?>
