@@ -85,8 +85,8 @@ $app->router("/project", 'POST', function($vars) use ($app, $jatbi) {
                     [
                         'type' => 'button',
                         'name' => $jatbi->lang("Xóa"),
-                        'permission' => ['record.deleted'],
-                        'action' => ['data-url' => '/record-delete?box='.$data['id'], 'data-action' => 'modal']
+                        'permission' => ['project.delete'],
+                        'action' => ['data-url' => '/project-delete?box='.$data['id'], 'data-action' => 'modal']
                     ],
                 ]
             ]),
@@ -201,4 +201,28 @@ $app->router("/project-edit/{id}", 'POST', function($vars) use ($app, $jatbi, $s
     exit;
 })->setPermissions(['project.edit']);
 
+$app->router("/project-delete", 'GET', function($vars) use ($app, $jatbi) {
+    $vars['title'] = $jatbi->lang("Xóa Dự án");
+    echo $app->render('templates/common/deleted.html', $vars, 'global');
+})->setPermissions(['project.delete']);
+
+$app->router("/project-delete", 'POST', function($vars) use ($app,$jatbi) {
+    $app->header([
+        'Content-Type' => 'application/json',
+    ]);
+    $boxid = explode(',', $app->xss($_GET['box']));
+    $datas = $app->select("project","*",["id"=>$boxid]);
+    if(count($datas)>0){
+        foreach($datas as $data){
+            $app->delete("project",["id"=>$data['id']]);
+            // $name[] = $data['name'];
+        }
+        // $jatbi->logs('accounts','accounts-deleted',$datas);
+        // $jatbi->trash('/users/accounts-restore',"Tài khoản: ".implode(', ',$name),["database"=>'accounts',"data"=>$boxid]);
+        echo json_encode(['status'=>'success',"content"=>$jatbi->lang("Xóa thành công")]);
+    }
+    else {
+        echo json_encode(['status'=>'error','content'=>$jatbi->lang("Có lỗi xẩy ra")]);
+    }
+})->setPermissions(['project.delete']);
 ?>

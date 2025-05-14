@@ -115,9 +115,10 @@
                     ],
                     "main"=>'false',
                     "permission" => [
-                        'project'       =>$jatbi->lang("Dự án"),
-                        'project.add'   =>$jatbi->lang("Thêm dự án"),
-                        'project.edit'  =>$jatbi->lang("Sửa dự án"),
+                        'project'           =>$jatbi->lang("Dự án"),
+                        'project.add'       =>$jatbi->lang("Thêm Dự án"),
+                        'project.edit'      =>$jatbi->lang("Sửa Dự án"),
+                        'project.delete'    =>$jatbi->lang("Xóa Dự án"),
                     ],
                 ],
             ],
