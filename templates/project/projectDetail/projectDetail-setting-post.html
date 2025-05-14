@@ -1,0 +1,35 @@
+<div class="modal fade modal-load" tabindex="-1" data-bs-backdrop="static">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title">Webhook</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <form method="POST" action="<?=$_SERVER['REQUEST_URI']?>" autocomplete="off" enctype="multipart/form-data" class="ajax-form" autocomplete="off">
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <label>Webhook <small class="text-danger">*</small></label>
+                        <input placeholder="Webhook Url" type="text" name="webhook" value="<?= $webhook_url?>" class="form-control form-control-solid">
+                    </div>
+                    <!-- <div class="mb-3">
+                        <label>Websocket </label>
+                        <input placeholder="Websocket" type="text" name="websocket" value="1695891275-su6ajk-lwg1uw-xxawny.api.eclo.io" class="form-control form-control-solid">
+                    </div> -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" name="token" value="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpcCI6IjE3MS4yNTEuMjIxLjEwNCIsImtleSI6IjFkYjVkZWVhZTI2NjExNDYwODVjYmExNzA0NjU3YWNlZmI5NTU1MTRiYmQyNDVhMDRkOTlkNmQ0NjE5MDM0NDZjOTBhNzYxNTNjZjFkYjNiOWY3MDE4NWUxN2Y4YmQzMWQ3OGUwMTIxOWQ5ZTEzMThlY2E0MjcwNmRhNzliZmI2NzViOTlmNGJlM2ZlYTRlZGNjY2YyNmUzMTUxMzE2NjE0YmQ2MWFlMWQzY2I5YTM1YWYzYmVlMzIyMTg2OGZiNGJmYmU3YmRiZDE3MDEwNGMyYjgxYjNlNzIyYjEyOGE3NjAyYTBjNTA4MjI4NWJmOTJiZmY2MWJlZWFkZGMwNDA5ZmUyZTQ3NjU1ZWMxOGQ0NTMzMTg5YmYwZWJkYWNlYjU1NjVhZjAwODhjZWZmNTdmN2MxOWI5YTQ5Zjc1OWRmNWNiZjczM2ViYzc3YzhmZTZmZDZiNWZlMTFjNjE5ZDU1ODg5YmVhYWU3MDJhMDQyODYxZmVkOTY3ZGQ0ZDQ2MTEwNzQzZmE1ZmI3NWRkY2YyNTMxNDFjYjhiY2RlZmQ2MWZlMzllNTU1NzdiOTI4OWYzYzNiOTY0ZDViNDNhYmU0ODVhYTUzMzBlZmM5MDY1MjM5ZTE4N2M5OWExOTZmOGU4NjczOTZjZGVmNzFkMDUzYjZlZDcxYjliZGExZjMxMzczNDM3MzIzMDM1MzEzOTMzIn0.NBZhsm59rSWnb0DVpRZXXb5_zuBs5Nl7Y8Ym-j5OoLY">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="submit" class="btn btn-primary ajax-submit" data-action="submit" data-alert="true" data-load="this">
+                    <div class="spinner-button" style="display: none">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span class="me-1">Đang tải.....</span>
+                    </div>
+                    <span class="name-button">Hoàn tất</span>
+                </button>
+            </div>
+	  	  </form>
+	    </div>
+	  </div>
+	</div>
