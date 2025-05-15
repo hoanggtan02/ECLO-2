@@ -68,4 +68,38 @@
       </div>
     </div>
     <?php include 'templates/project/projectDetail/menuProjectDetail.html'; ?>
+    <div class="card bg-body bg-opacity-50 shadow border-0 rounded-4">
+		<div class="card-body">
+      <h4 class="ps-3 py-2">Camera <?=$id?></h4>
+            <div class="custom-buttons d-none">
+                <div class="d-flex align-items-center justify-content-end">
+                    <!-- <button class="btn rounded-pill btn-sm btn-primary d-flex align-items-center me-1" data-action="modal" data-url="/project-add"><i class="ti ti-plus fs-6 me-1" aria-hidden="true"></i> <?=$jatbi->lang("Thêm")?></button>
+                    <button class="btn rounded-pill btn-sm btn-danger d-flex align-items-center" data-action="modal" data-checkbox="input.checker" data-url="/users/accounts-deleted"><i class="ti ti-trash fs-6 me-1" aria-hidden="true"></i> <?=$jatbi->lang("Xóa")?></button> -->
+                </div>
+            </div>
+            <table id="datatable" 
+                    data-table 
+                    class="table align-middle" 
+                    data-type="POST" 
+                    data-server="true" 
+                    data-processing="true" 
+                    data-page-length="10"
+                    data-searching="true"
+                    data-paging="true"
+                    data-state-save='true'
+                    style="width:100%">
+                <thead>
+                    <tr>
+                        <th data-name="name" data-orderable="true" class="text-nowrap " data-visible="true" data-class="ps-4 text-nowrap"><?=$jatbi->lang("Tên")?></th>
+                        <th data-name="area" data-orderable="true" class="text-nowrap " data-visible="true" data-class="text-start"><?=$jatbi->lang("Khu vực")?></th>
+                        <th data-name="face_count" data-orderable="true" class="text-nowrap " data-visible="true" data-class="text-start"><?=$jatbi->lang("Gương mặt")?></th>
+                        <th data-name="face_type" data-orderable="false " class="text-nowrap " data-visible="true" data-class="text-start"></th>
+                        <th data-name="device_code" data-orderable="false" class="text-nowrap " data-visible="true" data-class="text-start"></th>
+                        <th data-name="status" data-orderable="false" class="text-nowrap " data-visible="true" data-class="text-center"><?=$jatbi->lang("Trạng thái")?></th>
+                        <th data-name="action" data-orderable="false" class="text-nowrap " data-visible="true" data-class="text-end"><?=$jatbi->lang("Tùy chọn")?></th>
+                    </tr>
+                </thead>
+            </table>
+		</div>
+	</div>
 </div>

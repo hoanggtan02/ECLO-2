@@ -23,6 +23,9 @@ $app->router("/project", 'POST', function($vars) use ($app, $jatbi) {
     $customers = isset($_POST['customers']) ? $_POST['customers'] : '';
     $status = isset($_POST['status']) ? [$_POST['status'],$_POST['status']] : '';
     $startDate = isset($_POST['startDate']) ? $_POST['startDate'] : '';
+
+
+    
     $endDate = isset($_POST['endDate']) ? $_POST['endDate'] : '';
 
     $where = [
@@ -99,8 +102,7 @@ $app->router("/project", 'POST', function($vars) use ($app, $jatbi) {
         "recordsFiltered" => $count,
         "data" => $datas ?? [],
     ]);
-
-})->setPermissions(['project.add']);
+})->setPermissions(['project']);
 
 $app->router("/project-status/{id}", 'POST', function($vars) use ($app, $jatbi) {
     $app->header([
