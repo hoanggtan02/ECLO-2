@@ -115,6 +115,7 @@
                     ],
                     "main"=>'false',
                     "permission" => [
+<<<<<<< HEAD
                         'project'       =>$jatbi->lang("Dự án"),
                         'project.add'   =>$jatbi->lang("Thêm dự án"),
                         'project.edit'  =>$jatbi->lang("Sửa dự án"),
@@ -122,6 +123,12 @@
                         'area.add'      =>$jatbi->lang("Thêm khu vực"),
                         'area.edit'     =>$jatbi->lang("Sửa khu vực"),
                         'area.deleted'  =>$jatbi->lang("Xóa khu vực"),
+=======
+                        'project'           =>$jatbi->lang("Dự án"),
+                        'project.add'       =>$jatbi->lang("Thêm Dự án"),
+                        'project.edit'      =>$jatbi->lang("Sửa Dự án"),
+                        'project.delete'    =>$jatbi->lang("Xóa Dự án"),
+>>>>>>> b16af8e32c2d7209ab6ee4c97aba4d373a31e92f
                     ],
                 ],
             ],

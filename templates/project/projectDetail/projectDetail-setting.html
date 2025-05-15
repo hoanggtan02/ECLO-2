@@ -1,71 +1,87 @@
 <div class="container">
-    <div class="mb-3 d-flex justify-content-between align-items-center">
-      <div>
-        <h4 class="mb-0 fw-bold text-body"><?=$title?></h4>
-        <ul class="breadcrumb small mb-0">
-          <li class="breadcrumb-item small">
-            <a href="/" class="pjax-load link-secondary"
-              ><?=$jatbi->lang("Trang chủ")?></a
-            >
-          </li>
-          <li class="breadcrumb-item small">
-            <a href="/" class="pjax-load link-secondary"
-              ><?=$jatbi->lang("Dự án")?></a
-            >
-          </li>
-          <li class="breadcrumb-item small text-body" aria-current="page">
-            <?=$title?>
-          </li>
-        </ul>
-      </div>
-      <div class="filter-search">
-        <div class="d-flex align-items-center justify-content-end">
-          <div class="dropdown">
-            <button
-              class="btn btn-primary-light fw-semibold border-0 rounded-pill small d-flex align-items-center"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-              data-bs-auto-close="outside"
-            >
-              <i class="ti ti-filter fs-5 me-2"></i>
-              <?=$jatbi->lang("Điều kiện lọc")?>
-            </button>
-            <div
-              class="dropdown-menu dropdown-menu-end border-0 shadow-lg rounded-4 min-width bg-blur"
-              style="--min-width: 300px; --min-width-xs: 100vw"
-            >
-              <div class="fw-semibold py-2 px-3">
-                <?=$jatbi->lang("Điều kiện lọc")?>
-              </div>
-              <hr class="border-secondary border-opacity-50 my-2" />
-              <div class="px-3">
-                <?=$app->component('select', [ "name" => 'status', "placeholder"
-                => $jatbi->lang("Trạng thái"), "selected" =>
-                $app->xss($_GET['status'] ?? ''), "class" => 'filter-name', "attr"
-                => 'data-width="100%"', "options" => [ ["value" => "A", "text" =>
-                $jatbi->lang("Kích hoạt")], ["value" => "D", "text" =>
-                $jatbi->lang("Không Kích hoạt")], ] ])?>
-              </div>
-              <hr class="border-secondary border-opacity-50 my-2" />
-              <div class="px-3 py-2 text-end w-100">
-                <button
-                  type="button"
-                  class="btn btn-light px-3 rounded-pill py-2 reset-filter"
-                >
-                  <?=$jatbi->lang("Làm mới")?>
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-primary px-3 rounded-pill py-2 button-filter"
-                >
-                  <?=$jatbi->lang("Tìm")?>
-                </button>
-              </div>
-            </div>
-          </div>
+    <div class="mb-4 d-flex justify-content-between align-items-center">
+        <div>
+            <h4 class="mb-0 fw-bold text-dark"><?=$title?></h4>
+            <ul class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a href="/" class="pjax-load text-secondary text-decoration-none"><?=$jatbi->lang("Trang chủ")?></a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="/" class="pjax-load text-secondary text-decoration-none"><?=$jatbi->lang("Dự án")?></a>
+                </li>
+                <li class="breadcrumb-item text-dark" aria-current="page">
+                    <?=$title?>
+                </li>
+            </ul>
         </div>
-      </div>
     </div>
     <?php include 'templates/project/projectDetail/menuProjectDetail.html'; ?>
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="mb-0 fw-bold text-dark"><?=$jatbi->lang("Cài đặt")?></h5>
+            </div>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                <!-- Sử dụng API -->
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="ti ti-api fs-4 me-2 text-primary"></i>
+                                <h6 class="card-title fw-bold mb-0"><?=$jatbi->lang("Sử dụng API")?></h6>
+                            </div>
+                            <p class="card-text text-muted">
+                                <?=$jatbi->lang("Phiên bản API 1.1, hãy đảm bảo Key và Secret của bạn, ECLO không chịu trách nhiệm nếu dữ liệu của bạn bị lộ khi sử dụng API của bạn.")?>
+                            </p>
+                            <button type="button" class="btn btn-primary w-100 mt-2" data-name="<?= $jatbi->lang("Xem API") ?>" data-permission="customer" data-url="/manager/api-details?project=<?= $id ?>" data-action="modal">
+                                <?= $jatbi->lang("Xem API") ?>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Webhook -->
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="ti ti-webhook fs-4 me-2 text-success"></i>
+                                <h6 class="card-title fw-bold mb-0"><?=$jatbi->lang("Webhook")?></h6>
+                            </div>
+                            <p class="card-text text-muted">
+                                <?=$jatbi->lang("Hãy cài đặt link webhook của bạn để chúng tôi có thể gửi dữ liệu đến bạn. Mỗi dự án chỉ được gửi đến 1 webhook.")?>
+                            </p>
+                            <div class="mb-3">
+                                <div class="form-control text-break bg-body-tertiary" style="min-height: 38px;">
+                                    <?= $webhook_url ?>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-primary w-100 mt-2" data-name="<?= $jatbi->lang("Cấu hình") ?>"  data-url="/projects/projects-views/setting-webhook?id=<?= $id ?>" data-action="modal">
+                                <?= $jatbi->lang("Cấu hình") ?>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Token -->
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="ti ti-key fs-4 me-2 text-warning"></i>
+                                <h6 class="card-title fw-bold mb-0"><?=$jatbi->lang("Token")?></h6>
+                            </div>
+                            <p class="card-text text-muted">
+                                <?=$jatbi->lang("Bạn có thể đăng ký token trực tiếp tại đây, hoặc thông qua kênh API. Mỗi Token có hiệu lực trong 1 năm kể từ ngày đăng ký.")?>
+                            </p>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" value="Token đã được tạo" readonly>
+                            </div>
+                            <button type="button" class="btn btn-primary w-100 mt-2" data-name="<?= $jatbi->lang("Đăng ký") ?>" data-permission="customer" data-url="/manager/register-token?project=<?= $id ?>" data-action="modal">
+                                <?= $jatbi->lang("Đăng ký") ?>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

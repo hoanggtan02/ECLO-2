@@ -35,6 +35,29 @@ $app->router("/projects/projects-views/logs/logs-camera", 'POST', function($vars
     $orderName = isset($_POST['order'][0]['name']) ? $_POST['order'][0]['name'] : 'date';
     $orderDir = isset($_POST['order'][0]['dir']) ? $_POST['order'][0]['dir'] : 'desc';
     $id = $_GET['id'] ?? '';
+    // Lấy project.id từ id_project
+    $project = $app->get("project", "id", ["id_project" => $id]);
+    if (!$project) {
+        echo json_encode([
+            "draw" => $draw,
+            "recordsTotal" => 0,
+            "recordsFiltered" => 0,
+            "data" => []
+        ]);
+        return;
+    }
+
+
+    // Lấy danh sách camera thuộc dự án
+    $cameraIds = $app->select("camera", [
+        "[>]area" => ["area_id" => "id"]
+    ], "camera.id", [
+        "area.project_id" => $project,
+        "camera.is_active" => 1
+    ]);
+    if (empty($cameraIds)) {
+        $cameraIds = ['-1']; // Tránh lỗi nếu không có camera
+    }
 
     $where = [
         "AND" => [
@@ -67,16 +90,29 @@ $app->router("/projects/projects-views/logs/logs-camera", 'POST', function($vars
             $content = [];
         }
         error_log("Parsed content: " . json_encode($content));
-        $datas[] = [
-            "action" => $data['action'] ?? 'N/A',
-            "area" => $content['area'] ?? 'N/A',
-            "camera" => $content['camera'] ?? 'N/A',
-            "result" => $content['result'] ?? 'N/A',
-            "content" => $content['description'] ?? 'N/A',
-            "day" => $data['date'] ?? '',
-        ];
-    }
+        if (isset($content['camera'])) {
+            $cameraId = $content['camera'];
+            if (!in_array($cameraId, $cameraIds)) {
+                continue; // Bỏ qua nếu camera không thuộc dự án
+            }else{
+                $datas[] = [
+                    "action" => $data['action'] ?? 'N/A',
+                    "area" => $content['area'] ?? 'N/A',
+                    "camera" => $content['camera'] ?? 'N/A',
+                    "result" => $content['result'] ?? 'N/A',
+                    "content" => $content['description'] ?? 'N/A',
+                    "day" => $data['date'] ?? '',
+                ];
+            }
 
+        } else {
+            error_log("Camera ID not found in content: " . json_encode($content));
+            continue; // Bỏ qua nếu không có camera
+        }
+    }
+    // Cập nhật count dựa trên số bản ghi sau khi lọc
+    $count = count($datas);
+    error_log("Count after filtering for project $id: " . $count);
     error_log("Final data: " . json_encode($datas));
     echo json_encode([
         "draw" => $draw,
@@ -95,7 +131,7 @@ function addFaceRecognition($app, $jatbi, $cameraId, $imageUrl) {
     $logContent = [
         "description" => "Thêm thành công",
         "type" => "Nhận diện khuôn mặt",
-        "area" => $area['name'] ?? 'N/A',
+        "area" => $area ?? 'N/A',
         "camera" => $camera['id'] ?? 'N/A',
         "image" => $imageUrl,
         "result" => "1",
@@ -104,7 +140,8 @@ function addFaceRecognition($app, $jatbi, $cameraId, $imageUrl) {
     // Ghi log
     $jatbi->logs('camera', 'addface', $logContent);
 
-    
+    file_put_contents("my_custom_log.txt", "Area: " . print_r($area, true) . "\n", FILE_APPEND);
+
 }
 
 $app->router("/projects/test", 'GET', function($vars) use ($app, $jatbi) {
