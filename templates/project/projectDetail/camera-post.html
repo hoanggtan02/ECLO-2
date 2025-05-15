@@ -9,36 +9,45 @@
 			<div class="modal-body">
 				<h5 class="fw-bold text-body mb-3"><?=$title?></h5>
 				<form method="POST" action="<?=$_SERVER['REQUEST_URI']?>">
-					<div class="mb-3">
-						<label class="fw-bold text-body mb-2"><?=$jatbi->lang("Tên")?> <span class="text-danger">*</span></label>
-						<input type="text" name="name" class="form-control py-3 rounded-4 bg-body-tertiary" placeholder="<?=$jatbi->lang("Tên")?>" value="<?=$data['name_project'] ?? ''?>">
+                    <div class="mb-3">
+						<label class="fw-bold text-body mb-2"><?=$jatbi->lang("Tên")?></label>
+						<input type="text" name="name" class="form-control py-3 rounded-4 bg-body-tertiary " placeholder="<?=$jatbi->lang("Tên")?>" value="<?=$data['id'] ?? ''?>" disabled>
 					</div>
-					<div class="mb-3">
-						<label class="fw-bold text-body mb-2"><?=$jatbi->lang("Khách hàng")?> <span class="text-danger">*</span></label>
-						<select data-select data-style="form-select bg-body-tertiary py-3 rounded-4 w-100" data-live-search="true" data-width="100%" name="customer">
-							<option value="" disabled selected><?=$jatbi->lang("Khách hàng")?></option>
-							<?php foreach ($customers as $key => $customer) { ?>
-								<option value="<?=$customer['id']?>" <?=($data['id_customer']==$customer['id'])?'selected':''?>><?=$customer['name']?></option>
-							<?php } ?>
+                    <div class="mb-3">
+						<label class="fw-bold text-body mb-2"><?=$jatbi->lang("Cảnh báo lửa")?></label>
+						<select data-select data-style="form-select bg-body-tertiary py-3 rounded-4 w-100" data-live-search="true" data-width="100%" name="fire_warning">
+							<option value="A" <?=$data['fire_warning']== 'A'?'selected':''?>><?=$jatbi->lang('Kích hoạt')?></option>
+							<option value="D" <?=$data['fire_warning']!= 'A'?'selected':''?>><?=$jatbi->lang('Không kích hoạt')?></option>
+						</select>
+					</div>
+                    <div class="mb-3">
+						<label class="fw-bold text-body mb-2"><?=$jatbi->lang("Phát trực tiếp")?></label>
+						<select data-select data-style="form-select bg-body-tertiary py-3 rounded-4 w-100" data-live-search="true" data-width="100%" name="live_stream">
+							<option value="A" <?=$data['live_stream']== 'A'?'selected':''?>><?=$jatbi->lang('Kích hoạt')?></option>
+							<option value="D" <?=$data['live_stream']!= 'A'?'selected':''?>><?=$jatbi->lang('Không kích hoạt')?></option>
 						</select>
 					</div>
 					<div class="mb-3">
-						<label class="fw-bold text-body mb-2"><?=$jatbi->lang("Ngày bắt đầu")?> <span class="text-danger">*</span></label>
-						<input type="date" name="startDate" class="form-control py-3 rounded-4 bg-body-tertiary" value="<?=$data['startDate'] ?? ''?>">
+						<label class="fw-bold text-body mb-2"><?=$jatbi->lang("Âm thanh")?></label>
+						<select data-select data-style="form-select bg-body-tertiary py-3 rounded-4 w-100" data-live-search="true" data-width="100%" name="sound">
+							<option value="mute" <?=$data['sound']!= '1'?'selected':''?>><?=$jatbi->lang('Tắt ấm thanh')?></option>
+							<option value="notificationSound" <?=$data['sound']== 'notificationSound'?'selected':''?>><?=$jatbi->lang('ÂM thanh thông báo')?></option>
+							<option value="greetingSound" <?=$data['sound']== 'greetingSound'?'selected':''?>><?=$jatbi->lang('Âm thanh câu chào')?></option>
+						</select>
 					</div>
-					<div class="mb-3">
-						<label class="fw-bold text-body mb-2"><?=$jatbi->lang("Ngày kết thức")?> <span class="text-danger">*</span></label>
-						<input type="date" name="endDate" class="form-control py-3 rounded-4 bg-body-tertiary" value="<?=$data['endDate'] ?? ''?>">
+                    <div class="mb-3">
+						<label class="fw-bold text-body mb-2"><?=$jatbi->lang("Xoay")?></label>
+						<select data-select data-style="form-select bg-body-tertiary py-3 rounded-4 w-100" data-live-search="true" data-width="100%" name="rotate">
+							<option value="0" <?=$data['rotate']!= '180'?'selected':''?>>0 <?=$jatbi->lang('Độ')?></option>
+							<option value="180" <?=$data['rotate']== '180'?'selected':''?>>180 <?=$jatbi->lang('Độ')?></option>
+						</select>
 					</div>
-					<div class="mb-3">
-						<label class="fw-bold text-body mb-2"><?=$jatbi->lang("Ghi chú")?></label>
-						<textarea name="note" class="form-control py-3 rounded-4 bg-body-tertiary" rows="5" placeholder="<?=$jatbi->lang("Ghi chú...")?>" value="<?=$data['note'] ?? ''?>"></textarea>
-					</div>
-					<div class="mb-3">
-						<label class="fw-bold text-body mb-2"><?=$jatbi->lang("Trạng thái")?> <span class="text-danger">*</span></label>
-						<select data-select data-style="form-select bg-body-tertiary py-3 rounded-4 w-100" data-live-search="true" data-width="100%" name="status">
-							<option value="A" <?=$data['status']== 'A'?'selected':''?>><?=$jatbi->lang('Kích hoạt')?></option>
-							<option value="D" <?=$data['status']== 'D'?'selected':''?>><?=$jatbi->lang('Không kích hoạt')?></option>
+                    <div class="mb-3">
+						<label class="fw-bold text-body mb-2"><?=$jatbi->lang("Nhận diện")?></label>
+						<select data-select data-style="form-select bg-body-tertiary py-3 rounded-4 w-100" data-live-search="true" data-width="100%" name="recognition">
+							<option value="average" <?=$data['recognition']!= '1'?'selected':''?>><?=$jatbi->lang('Trung bình')?></option>
+							<option value="fairlyAccurate" <?=$data['recognition']== 'fairlyAccurate'?'selected':''?>><?=$jatbi->lang('Chính xác khá')?></option>
+							<option value="highlyAccurate" <?=$data['recognition']== 'highlyAccurate'?'selected':''?>><?=$jatbi->lang('Chính xác cao')?></option>
 						</select>
 					</div>
 					<div class="col-lg-12">

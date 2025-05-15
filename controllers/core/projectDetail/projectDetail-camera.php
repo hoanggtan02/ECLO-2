@@ -82,10 +82,10 @@ $app->router("/projects/projects-views/camera", 'POST', function($vars) use ($ap
             "action" => $app->component("action",[
                 "button" => [
                     [
-                        'type' => 'link', // Changed from 'button' to 'link' for clarity
+                        'type' => 'button', // Changed from 'button' to 'link' for clarity
                         'name' => $jatbi->lang("Cấu hình"),
                         'permission' => ['project'],
-                        'action' => ['data-url' => '/projects/camera-configuration?id=' . $data['id'], 'data-action' => 'modal']
+                        'action' => ['data-url' => '/project/camera-configuration/'.$data['id'], 'data-action' => 'modal']
                     ],
                     // [
                     //     'type' => 'button',
@@ -139,40 +139,32 @@ $app->router("/project/camera-status/{id}", 'POST', function($vars) use ($app, $
 })->setPermissions(['project.edit']);
 
 $app->router("/project/camera-configuration/{id}", 'GET', function($vars) use ($app, $jatbi, $setting) {
-    $vars['title'] = $jatbi->lang("Sửa Dự án");
+    $vars['title'] = $jatbi->lang("Cấu hình Camera");
     $vars['customers'] = $app->select("customer","*");
-    $vars['data'] = $app->get("project","*",["id"=>'1']);
+    $vars['data'] = $app->get("camera","*",["id"=>$vars['id']]);
     if($vars['data']>1){
-        echo $app->render('templates/project/project-post.html', $vars, 'global');
+        echo $app->render('templates\project\projectDetail\camera-post.html', $vars, 'global');
     }
     else {
         echo $app->render('templates/common/error-modal.html', $vars, 'global');
     }
 })->setPermissions(['project.edit']);
 
-// $app->router("/project/camera-configuration/{id}", 'POST', function($vars) use ($app, $jatbi, $setting) {
-//     $app->header([
-//         'Content-Type' => 'application/json',
-//     ]);
-//     if($app->xss($_POST['name']) == '' || $app->xss($_POST['customer']??'') == '' || $app->xss($_POST['startDate']) == '' || $app->xss($_POST['endDate']) == '') {
-//         echo json_encode(["status"=>"error","content"=>$jatbi->lang("Vui lòng nhập các trường bắt buộc.")]);
-//         exit;
-//     }
-//     if($app->xss($_POST['startDate']) > $app->xss($_POST['endDate'])) {
-//         echo json_encode(["status"=>"error","content"=>$jatbi->lang("Ngày bắt đầu không được lớn hơn ngày kết thúc.")]);
-//         exit;
-//     }
-//     $insert = [
-//         "name_project"  => $app->xss($_POST['name']),
-//         "id_customer"   => $app->xss($_POST['customer']),
-//         "startDate"     => $app->xss($_POST['startDate']),
-//         "endDate"       => $app->xss($_POST['endDate']),
-//         "status"        => $app->xss($_POST['status']),
-//     ];
-//     $app->update("project",$insert,["id"=>$vars['id']]);
-//     // $jatbi->logs('staffConfiguration','salary-edit id = ' . $vars['id'] ,$insert);
-//     echo json_encode(['status'=>'success','content'=>$jatbi->lang("Cập nhật thành công")]);
-//     exit;
-// })->setPermissions(['project.edit']);
+$app->router("/project/camera-configuration/{id}", 'POST', function($vars) use ($app, $jatbi, $setting) {
+    $app->header([
+        'Content-Type' => 'application/json',
+    ]);
+    $insert = [
+        "fire_warning"  => $app->xss($_POST['fire_warning']),
+        "live_stream"   => $app->xss($_POST['live_stream']),
+        "sound"         => $app->xss($_POST['sound']),
+        "rotate"        => $app->xss($_POST['rotate']),
+        "recognition"   => $app->xss($_POST['recognition']),
+    ];
+    $app->update("camera",$insert,["id"=>$vars['id']]);
+    // $jatbi->logs('staffConfiguration','salary-edit id = ' . $vars['id'] ,$insert);
+    echo json_encode(['status'=>'success','content'=>$jatbi->lang("Cập nhật thành công")]);
+    exit;
+})->setPermissions(['project.edit']);
 
 ?>
