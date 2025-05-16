@@ -14,7 +14,8 @@ $app->router("/projects/projects-views/setting", 'GET', function($vars) use ($ap
         "project.endDate",
         "project.webhook_url",
         "customer.name (customer_name)"
-    ], ["project.id_project" => $id]);
+    ], ["project.id_project" => $id, 
+        "project.status" => 'A']);
     $vars['active'] = 'setting'; // Để highlight tab Tổng quan
     $vars['id'] = $id;
     $vars['webhook_url'] = $project[0]['webhook_url'] ?? '';
