@@ -9,56 +9,26 @@
             <div class="modal-body">
                 <h5 class="fw-bold text-body mb-3"><?=$title?></h5>
                 <br>
-                <form method="POST" action="<?=$_SERVER['REQUEST_URI']?>">
+                <form method="POST" action="/project/area-add">
+                    <input type="hidden" name="id_project" value="<?= $app->xss($id_project) ?>">
                     <div class="row">
                         <div class="mb-3">
-                            <label class="fw-bold text-body mb-2"><?=$jatbi->lang("Loại")?> <span class="text-danger">*</span></label>
-                            <select name="type" class="form-control py-3 rounded-4 bg-body-tertiary">
-                                <option value="Đi trễ" <?=isset($data['type']) && $data['type'] == 'Đi trễ' ? 'selected' : ''?>><?=$jatbi->lang("Đi trễ")?></option>
-                                <option value="Về sớm" <?=isset($data['type']) && $data['type'] == 'Về sớm' ? 'selected' : ''?>><?=$jatbi->lang("Về sớm")?></option>
-                            </select>
+                            <label class="fw-bold text-body mb-2"><?=$jatbi->lang("Tên")?> <span class="text-danger">*</span></label>
+                            <input type="text" name="name" class="form-control py-3 rounded-4 bg-body-tertiary" placeholder="<?=$jatbi->lang("Tên khu vực")?>" required>
                         </div>
                         <div class="mb-3">
-                            <label class="fw-bold text-body mb-2">
-                                <?= $jatbi->lang("Tên nhân viên (sn)") ?>
-                                <span class="text-danger">*</span>
-                            </label>
-                            <select name="sn" class="form-control py-3 rounded-4 bg-body-tertiary" required>
-                                <option value=""><?= $jatbi->lang("Chọn nhân viên") ?></option>
-                                <?php foreach ($employees as $employee) { ?>
-                                    <option value="<?= htmlspecialchars($employee['sn']) ?>" 
-                                        <?= isset($data['sn']) && $data['sn'] == $employee['sn'] ? 'selected' : '' ?>>
-                                        <?= htmlspecialchars($employee['name'] . " (" . $employee['sn'] . ")") ?>
-                                    </option>
-                                <?php } ?>
-                            </select>
-                            <input type="hidden" name="id" value="<?= htmlspecialchars($data['id'] ?? '') ?>" />
+                            <label class="fw-bold text-body mb-2"><?=$jatbi->lang("Địa chỉ")?></label>
+                            <input type="text" name="address" class="form-control py-3 rounded-4 bg-body-tertiary" placeholder="<?=$jatbi->lang("Địa chỉ")?>">
                         </div>
                         <div class="mb-3">
-                            <label class="fw-bold text-body mb-2"><?=$jatbi->lang("Giá trị (phút)")?> <span class="text-danger">*</span></label>
-                            <input type="number" name="value" class="form-control py-3 rounded-4 bg-body-tertiary" placeholder="<?=$jatbi->lang("Giá trị (phút)")?>" value="<?=$data['value'] ?? ''?>">
-                        </div>
-                        <div class="mb-3">
-                            <label class="fw-bold text-body mb-2"><?=$jatbi->lang("Số tiền (VNĐ)")?> <span class="text-danger">*</span></label>
-                            <input type="number" name="amount" class="form-control py-3 rounded-4 bg-body-tertiary" placeholder="<?=$jatbi->lang("Số tiền (VNĐ)")?>" value="<?=$data['amount'] ?? ''?>">
-                        </div>
-                        <div class="mb-3">
-                            <label class="fw-bold text-body mb-2"><?=$jatbi->lang("Ngày áp dụng")?> <span class="text-danger">*</span></label>
-                            <input type="date" name="apply_date" class="form-control py-3 rounded-4 bg-body-tertiary" value="<?=$data['apply_date'] ?? date('Y-m-d')?>">
-                        </div>
-                        <div class="mb-3">
-                            <label class="fw-bold text-body mb-2"><?=$jatbi->lang("Nội dung")?></label>
-                            <textarea name="content" class="form-control py-3 rounded-4 bg-body-tertiary" rows="5" placeholder="<?=$jatbi->lang("Nội dung...")?>"><?=$data['content'] ?? ''?></textarea>
-                        </div>
-                        <div class="mb-5">
-                            <label class="fw-bold text-body mb-2"><?=$jatbi->lang("Trạng thái")?></label>
-                            <select data-select data-style="form-select bg-body-tertiary py-3 rounded-4 w-100" data-live-search="true" data-width="100%" name="status">
-                                <option value="A" <?=$data['status']== 'A'?'selected':''?>><?=$jatbi->lang('Kích hoạt')?></option>
-                            	<option value="D" <?=$data['status']== 'D'?'selected':''?>><?=$jatbi->lang('Không kích hoạt')?></option>
+                            <label class="fw-bold text-body mb-2"><?=$jatbi->lang("Trạng thái")?> <span class="text-danger">*</span></label>
+                            <select name="status" class="form-control py-3 rounded-4 bg-body-tertiary" required>
+                                <option value="A" selected><?=$jatbi->lang("Kích hoạt")?></option>
+                                <option value="D"><?=$jatbi->lang("Không Kích hoạt")?></option>
                             </select>
                         </div>
                         <div class="col-lg-12">
-                            <button type="submit" class="btn btn-primary w-100 py-3 rounded-pill fw-bold" data-action="submit" data-alert="true" data-load="this"><?=$jatbi->lang("Hoàn thành")?></button>
+                            <button type="submit" class="btn btn-primary w-100 py-3 rounded-pill fw-bold" data-action="submit" data-alert="true" data-load="this"><?=$jatbi->lang("Hoàn tất")?></button>
                         </div>
                     </div>
                 </form>
