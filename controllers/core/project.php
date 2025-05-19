@@ -66,7 +66,7 @@ $app->router("/project", 'POST', function($vars) use ($app, $jatbi) {
     ], $where, function ($data) use (&$datas,$jatbi,$app) {
         $datas[] = [
             "checkbox"  => $app->component("box",["data"=>$data['id']]),
-            "name"      => $data['name_project'],
+            "name"      => '<a href="/projects/projects-views?id=' . $data['id_project'] . '">' . $data['name_project'] . '</a>',
             "customer"  => $data['customer'],
             "startDate" => DateTime::createFromFormat('Y-m-d', $data['startDate'])->format('d-m-Y'),
             "endDate"   => DateTime::createFromFormat('Y-m-d', $data['endDate'])->format('d-m-Y'),
