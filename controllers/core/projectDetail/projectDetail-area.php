@@ -332,3 +332,13 @@ $app->router("/project/area-add", 'POST', function($vars) use ($app, $jatbi) {
         echo json_encode(["status" => "error", "content" => $jatbi->lang("Thêm khu vực thất bại.")]);
     }
 })->setPermissions(['area.add']);
+
+$app->router("/project/camera-add", 'GET', function($vars) use ($app, $jatbi) {
+    $vars['title'] = $jatbi->lang("Thêm Camera");
+    $vars['customers'] = $app->select("customer","*");
+    $vars['data'] = [
+        "id_customer" => 'A',
+        "status" => 'A',
+    ];
+    echo $app->render('templates/project/projectDetail/cameraAdd-post.html', $vars, 'global');
+})->setPermissions(['project']);

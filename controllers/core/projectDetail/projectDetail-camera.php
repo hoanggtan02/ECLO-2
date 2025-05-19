@@ -36,7 +36,7 @@ $app->router("/projects/projects-views/camera", 'POST', function($vars) use ($ap
     $start = $_POST['start'] ?? 0;
     $length = $_POST['length'] ?? 10;
     $searchValue = $_POST['search']['value'] ?? '';
-    $orderName = isset($_POST['order'][0]['name']) ? $_POST['order'][0]['name'] : 'name';
+    $orderName = isset($_POST['order'][0]['name']) ? $_POST['order'][0]['name'] : 'id';
     $orderDir = isset($_POST['order'][0]['dir']) ? $_POST['order'][0]['dir'] : 'DESC';
 
     $id = $_GET['id'] ?? '';
@@ -58,7 +58,10 @@ $app->router("/projects/projects-views/camera", 'POST', function($vars) use ($ap
         $where["AND"]["camera.area_id"] = $area;
     }
     
-    $count = $app->count("camera",[
+    $count = $app->count("camera", [
+        "[>]area"       => ["area_id" => "id"],
+        "[>]project"    => ["area.project_id" => "id"],
+    ],"*",[
         "AND" => $where['AND'],
     ]);
     $app->select("camera", [
@@ -150,28 +153,21 @@ $app->router("/project/camera-configuration/{id}", 'GET', function($vars) use ($
     $vars['customers'] = $app->select("customer","*");
     $vars['data'] = $app->get("camera","*",["id"=>$vars['id']]);
     if($vars['data']>1){
-        echo $app->render('templates\project\projectDetail\camera-post.html', $vars, 'global');
+        echo $app->render('templates\project\projectDetail\cameraConfiguration-post.html', $vars, 'global');
     }
     else {
         echo $app->render('templates/common/error-modal.html', $vars, 'global');
     }
 })->setPermissions(['project.edit']);
 
-$app->router("/project/camera-configuration/{id}", 'POST', function($vars) use ($app, $jatbi, $setting) {
-    $app->header([
-        'Content-Type' => 'application/json',
-    ]);
-    $insert = [
-        "fire_warning"  => $app->xss($_POST['fire_warning']),
-        "live_stream"   => $app->xss($_POST['live_stream']),
-        "sound"         => $app->xss($_POST['sound']),
-        "rotate"        => $app->xss($_POST['rotate']),
-        "recognition"   => $app->xss($_POST['recognition']),
+$app->router("/project-add", 'GET', function($vars) use ($app, $jatbi) {
+    $vars['title'] = $jatbi->lang("Thêm Dự án");
+    $vars['customers'] = $app->select("customer","*");
+    $vars['data'] = [
+        "id_customer" => 'A',
+        "status" => 'A',
     ];
-    $app->update("camera",$insert,["id"=>$vars['id']]);
-    // $jatbi->logs('staffConfiguration','salary-edit id = ' . $vars['id'] ,$insert);
-    echo json_encode(['status'=>'success','content'=>$jatbi->lang("Cập nhật thành công")]);
-    exit;
-})->setPermissions(['project.edit']);
+    echo $app->render('templates/project/project-post.html', $vars, 'global');
+})->setPermissions(['project.add']);
 
 ?>
