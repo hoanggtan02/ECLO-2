@@ -24,6 +24,7 @@ $app->router("/projects/projects-views/camera", 'GET', function($vars) use ($app
         $vars['title'] = $jatbi->lang("Project Not Found");
         $vars['project'] = null;
     }
+    $vars['area'] = $app->select("area",["name (text)","id (value)"]);
     echo $app->render('templates/project/projectDetail/projectDetail-camera.html', $vars);
 })->setPermissions(['project']);
 
@@ -39,7 +40,7 @@ $app->router("/projects/projects-views/camera", 'POST', function($vars) use ($ap
     $orderDir = isset($_POST['order'][0]['dir']) ? $_POST['order'][0]['dir'] : 'DESC';
 
     $id = $_GET['id'] ?? '';
-    $area_id = $_GET['area_id'] ?? '';
+    $area = $_GET['area'] ?? '';
     // $endDate = isset($_POST['endDate']) ? $_POST['endDate'] : '';
 
     $where = [
@@ -53,8 +54,8 @@ $app->router("/projects/projects-views/camera", 'POST', function($vars) use ($ap
         "ORDER" => [$orderName => strtoupper($orderDir)]
     ];
 
-    if($area_id) {
-        $where["AND"]["camera.area_id"] = $area_id;
+    if($area) {
+        $where["AND"]["camera.area_id"] = $area;
     }
     
     $count = $app->count("camera",[
