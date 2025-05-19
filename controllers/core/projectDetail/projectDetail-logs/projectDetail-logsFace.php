@@ -15,7 +15,8 @@ $app->router("/projects/projects-views/logs/logs-face", 'GET', function($vars) u
         "project.startDate",
         "project.endDate",
         "customer.name (customer_name)"
-    ], ["project.id_project" => $id]);
+    ], ["project.id_project" => $id,
+        "project.status" => 'A']);
     $vars['active'] = 'logs';
     $vars['active2'] = 'face';
     $vars['id'] = $id;
@@ -59,7 +60,8 @@ $app->router("/projects/projects-views/logs/logs-face", 'POST', function($vars) 
     }
 
     // Lấy project.id từ id_project
-    $project = $app->select("project", ["id"], ["id_project" => $id_project]);
+    $project = $app->select("project", ["id"], ["id_project" => $id_project, 
+        "status" => 'A']);
     if (!$project || !isset($project[0])) {
         error_log("Error: Project not found for id_project: $id_project");
         echo json_encode([
@@ -67,7 +69,6 @@ $app->router("/projects/projects-views/logs/logs-face", 'POST', function($vars) 
             "recordsTotal" => 0,
             "recordsFiltered" => 0,
             "data" => [],
-            "error" => "Project not found"
         ]);
         return;
     }

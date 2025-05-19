@@ -14,7 +14,8 @@ $app->router("/projects/projects-views/setting", 'GET', function($vars) use ($ap
         "project.endDate",
         "project.webhook_url",
         "customer.name (customer_name)"
-    ], ["project.id_project" => $id]);
+    ], ["project.id_project" => $id, 
+        "project.status" => 'A']);
     $vars['active'] = 'setting'; // Để highlight tab Tổng quan
     $vars['id'] = $id;
     $vars['webhook_url'] = $project[0]['webhook_url'] ?? '';
@@ -50,7 +51,7 @@ $app->router("/projects/projects-views/setting-webhook", 'POST', function($vars)
         }
         $cameraIds = $app->select("camera", [
             "[>]area" => ["area_id" => "id"]
-        ], "camera.id", [
+        ], ["camera.id", "camera.api_link"], [
             "area.project_id" => $project['id'],
             "camera.is_active" => 1
         ]);
@@ -67,7 +68,7 @@ $app->router("/projects/projects-views/setting-webhook", 'POST', function($vars)
         foreach ($cameraIds as $cameraId) {
             try {
                 $apiData = [
-                    'deviceKey' => $cameraId,
+                    'deviceKey' => $cameraId['id'],
                     'secret'    => '123456',
                     'sevUploadRecRecordUrl' => $webhook_url,
                 ];
@@ -76,8 +77,8 @@ $app->router("/projects/projects-views/setting-webhook", 'POST', function($vars)
                     'Content-Type: application/x-www-form-urlencoded'
                 ];
                 // Gửi yêu cầu đến API
-                $response = $app->apiPost(
-                    'http://camera.ellm.io:8190/api/device/setSevConfig',
+                $app->apiPost(
+                    $cameraId['api_link'],
                     $apiData,   
                     $headers
                 );
@@ -97,7 +98,7 @@ $app->router("/projects/projects-views/setting-webhook", 'POST', function($vars)
                             'sevUploadRecRecordUrl' => $old_webhook_url,
                         ];
                         $app->apiPost(
-                            'http://camera.ellm.io:8190/api/device/setSevConfig',
+                            $camId['api_link'],
                             $rollbackData,
                             $headers
                         );

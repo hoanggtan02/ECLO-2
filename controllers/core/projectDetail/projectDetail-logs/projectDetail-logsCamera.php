@@ -13,7 +13,7 @@ $app->router("/projects/projects-views/logs/logs-camera", 'GET', function($vars)
         "project.startDate",
         "project.endDate",
         "customer.name (customer_name)"
-    ], ["project.id_project" => $id]);
+    ], ["project.id_project" => $id, "project.status" => 'A']);
     $vars['active'] = 'logs'; // Để highlight tab Tổng quan
     $vars['active2'] = 'camera'; // Để highlight tab Camera
     $vars['id'] = $id;
@@ -36,7 +36,7 @@ $app->router("/projects/projects-views/logs/logs-camera", 'POST', function($vars
     $orderDir = isset($_POST['order'][0]['dir']) ? $_POST['order'][0]['dir'] : 'desc';
     $id = $_GET['id'] ?? '';
     // Lấy project.id từ id_project
-    $project = $app->get("project", "id", ["id_project" => $id]);
+    $project = $app->get("project", "id", ["id_project" => $id, "status" => 'A']);
     if (!$project) {
         echo json_encode([
             "draw" => $draw,
@@ -53,7 +53,8 @@ $app->router("/projects/projects-views/logs/logs-camera", 'POST', function($vars
         "[>]area" => ["area_id" => "id"]
     ], "camera.id", [
         "area.project_id" => $project,
-        "camera.is_active" => 1
+        "camera.is_active" => 'A',
+        "area.is_active" => 'A',
     ]);
     if (empty($cameraIds)) {
         $cameraIds = ['-1']; // Tránh lỗi nếu không có camera

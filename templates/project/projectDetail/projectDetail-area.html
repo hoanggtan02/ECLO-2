@@ -1,21 +1,15 @@
-<div class="container">
+<!-- <div class="container">
     <div class="mb-3 d-flex justify-content-between align-items-center">
       <div>
         <h4 class="mb-0 fw-bold text-body"><?=$title?></h4>
         <ul class="breadcrumb small mb-0">
           <li class="breadcrumb-item small">
-            <a href="/" class="pjax-load link-secondary"
-              ><?=$jatbi->lang("Trang chủ")?></a
-            >
+            <a href="/" class="pjax-load link-secondary"><?=$jatbi->lang("Trang chủ")?></a>
           </li>
           <li class="breadcrumb-item small">
-            <a href="/" class="pjax-load link-secondary"
-              ><?=$jatbi->lang("Dự án")?></a
-            >
+            <a href="/" class="pjax-load link-secondary"><?=$jatbi->lang("Dự án")?></a>
           </li>
-          <li class="breadcrumb-item small text-body" aria-current="page">
-            <?=$title?>
-          </li>
+          <li class="breadcrumb-item small text-body" aria-current="page"><?=$title?></li>
         </ul>
       </div>
       <div class="filter-search">
@@ -28,39 +22,31 @@
               aria-expanded="false"
               data-bs-auto-close="outside"
             >
-              <i class="ti ti-filter fs-5 me-2"></i>
-              <?=$jatbi->lang("Điều kiện lọc")?>
+              <i class="ti ti-filter fs-5 me-2"></i><?=$jatbi->lang("Điều kiện lọc")?>
             </button>
             <div
               class="dropdown-menu dropdown-menu-end border-0 shadow-lg rounded-4 min-width bg-blur"
               style="--min-width: 300px; --min-width-xs: 100vw"
             >
-              <div class="fw-semibold py-2 px-3">
-                <?=$jatbi->lang("Điều kiện lọc")?>
-              </div>
+              <div class="fw-semibold py-2 px-3"><?=$jatbi->lang("Điều kiện lọc")?></div>
               <hr class="border-secondary border-opacity-50 my-2" />
               <div class="px-3">
-                <?=$app->component('select', [ "name" => 'status', "placeholder"
-                => $jatbi->lang("Trạng thái"), "selected" =>
-                $app->xss($_GET['status'] ?? ''), "class" => 'filter-name', "attr"
-                => 'data-width="100%"', "options" => [ ["value" => "A", "text" =>
-                $jatbi->lang("Kích hoạt")], ["value" => "D", "text" =>
-                $jatbi->lang("Không Kích hoạt")], ] ])?>
+                <?=$app->component('select', [
+                    "name" => 'status',
+                    "placeholder" => $jatbi->lang("Trạng thái"),
+                    "selected" => $app->xss($_GET['status'] ?? ''),
+                    "class" => 'filter-name',
+                    "attr" => 'data-width="100%"',
+                    "options" => [
+                        ["value" => "A", "text" => $jatbi->lang("Kích hoạt")],
+                        ["value" => "D", "text" => $jatbi->lang("Không Kích hoạt")],
+                    ]
+                ])?>
               </div>
               <hr class="border-secondary border-opacity-50 my-2" />
               <div class="px-3 py-2 text-end w-100">
-                <button
-                  type="button"
-                  class="btn btn-light px-3 rounded-pill py-2 reset-filter"
-                >
-                  <?=$jatbi->lang("Làm mới")?>
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-primary px-3 rounded-pill py-2 button-filter"
-                >
-                  <?=$jatbi->lang("Tìm")?>
-                </button>
+                <button type="button" class="btn btn-light px-3 rounded-pill py-2 reset-filter"><?=$jatbi->lang("Làm mới")?></button>
+                <button type="button" class="btn btn-primary px-3 rounded-pill py-2 button-filter"><?=$jatbi->lang("Tìm")?></button>
               </div>
             </div>
           </div>
@@ -69,137 +55,149 @@
     </div>
     <?php include 'templates/project/projectDetail/menuProjectDetail.html'; ?>
 
-    
-  <div class="card bg-body bg-opacity-50 shadow-sm border-0 rounded-2">
-    <div class="card-body">
-      <h4 class="fw-bold px-3">Khu vực</h4>
-      <div class="custom-buttons d-none">
+    <div class="card bg-body bg-opacity-50 shadow-sm border-0 rounded-2">
+        <div class="card-body">
+            <h4 class="fw-bold px-3">Khu vực</h4>
+            <div class="custom-buttons d-none">
                 <div class="d-flex align-items-center justify-content-end">
                     <button class="btn rounded-pill btn-sm btn-primary d-flex align-items-center me-1" data-action="modal" data-url="/project/area-add"><i class="ti ti-plus fs-6 me-1" aria-hidden="true"></i> <?=$jatbi->lang("Thêm")?></button>
                     <button class="btn rounded-pill btn-sm btn-danger d-flex align-items-center" data-action="modal" data-checkbox="input.checker" data-url="/project/area-deleted"><i class="ti ti-trash fs-6 me-1" aria-hidden="true"></i> <?=$jatbi->lang("Xóa")?></button>
                 </div>
-            </div> 
-      <!-- <div class="custom-buttons">
-        <div class="d-flex align-items-center justify-content-end">
-          <button
-            class="btn rounded-pill btn-sm btn-primary d-flex align-items-center me-1"
-            data-action="modal"
-            data-url="/project/area-add?id=<?=$app->xss($id)?>"
-          >
-            <i class="ti ti-plus fs-6 me-1" aria-hidden="true"></i>
-            <?=$jatbi->lang("Thêm")?>
-          </button>
-          <button
-            class="btn rounded-pill btn-sm btn-danger d-flex align-items-center"
-            data-action="modal"
-            data-checkbox="input.checker"
-            data-url="/project/area-deleted"
-          >
-            <i class="ti ti-trash fs-6 me-1" aria-hidden="true"></i>
-            <?=$jatbi->lang("Xóa")?>
-          </button>
+            </div>
+            <table
+                id="datatable"
+                data-table
+                class="table align-middle"
+                data-type="POST"
+                data-server="true"
+                data-processing="true"
+                data-page-length="10"
+                data-searching="true"
+                data-paging="true"
+                data-state-save="true"
+                style="width: 100%"
+            >
+                <thead>
+                    <tr>
+                        <th data-name="checkbox" data-orderable="false" class="text-nowrap" data-visible="true" data-class="text-center">
+                            <div class="form-check">
+                                <input class="form-check-input checkall" type="checkbox" value="" data-checkbox="input.checker" />
+                            </div>
+                        </th>
+                        <th data-name="id" data-orderable="true" class="text-nowrap" data-visible="false" data-class="text-start"><?=$jatbi->lang("ID")?></th>
+                        <th data-name="name" data-orderable="true" class="text-nowrap" data-visible="true" data-class="text-start"><?=$jatbi->lang("Tên khu vực")?></th>
+                        <th data-name="project_id" data-orderable="true" class="text-nowrap" data-visible="true" data-class="text-start"><?=$jatbi->lang("Dự án")?></th>
+                        <th data-name="address" data-orderable="true" class="text-nowrap" data-visible="true" data-class="text-start"><?=$jatbi->lang("Địa chỉ")?></th>
+                        <th data-name="code" data-orderable="true" class="text-nowrap" data-visible="true" data-class="text-center"><?=$jatbi->lang("Mã khu vực")?></th>
+                        <th data-name="is_active" data-orderable="false" class="text-nowrap" data-visible="true" data-class="text-center"><?=$jatbi->lang("Trạng thái")?></th>
+                        <th data-name="action" data-orderable="false" class="text-nowrap" data-visible="true" data-class="text-center"><?=$jatbi->lang("Tùy chọn")?></th>
+                    </tr>
+                </thead>
+            </table>
         </div>
-      </div> -->
-      <!-- <hr class="border-secondary border-opacity-50 my-2" /> -->
-      <table
-        id="datatable"
-        data-table
-        class="table align-middle"
-        data-url="/project/area"
-        data-type="POST"
-        data-server="true"
-        data-processing="true"
-        data-page-length="10"
-        data-searching="true"
-        data-paging="true"
-        data-state-save="false"
-        style="width: 100%"
-      >
-        <thead>
-          <tr>
-            <th
-              data-name="checkbox"
-              data-orderable="false"
-              class="text-nowrap"
-              data-visible="true"
-              data-class="text-center"
-            >
-              <div class="form-check">
-                <input
-                  class="form-check-input checkall"
-                  type="checkbox"
-                  value=""
-                  data-checkbox="input.checker"
-                />
-              </div>
-            </th>
-            <th
-              data-name="id"
-              data-orderable="true"
-              class="text-nowrap"
-              data-visible="false"
-              data-class="text-start"
-            >
-              <?=$jatbi->lang("ID")?>
-            </th>
-            <th
-              data-name="name"
-              data-orderable="true"
-              class="text-nowrap"
-              data-visible="true"
-              data-class="text-start"
-            >
-              <?=$jatbi->lang("Tên khu vực")?>
-            </th>
-            <th
-              data-name="project_id"
-              data-orderable="true"
-              class="text-nowrap"
-              data-visible="true"
-              data-class="text-start"
-            >
-              <?=$jatbi->lang("Dự án")?>
-            </th>
-            <th
-              data-name="address"
-              data-orderable="true"
-              class="text-nowrap"
-              data-visible="true"
-              data-class="text-start"
-            >
-              <?=$jatbi->lang("Địa chỉ")?>
-            </th>
-            <th
-              data-name="code"
-              data-orderable="true"
-              class="text-nowrap"
-              data-visible="true"
-              data-class="text-center"
-            >
-              <?=$jatbi->lang("Mã khu vực")?>
-            </th>
-            <th
-              data-name="is_active"
-              data-orderable="false"
-              class="text-nowrap"
-              data-visible="true"
-              data-class="text-center"
-            >
-              <?=$jatbi->lang("Trạng thái")?>
-            </th>
-            <th
-              data-name="action"
-              data-orderable="false"
-              class="text-nowrap"
-              data-visible="true"
-              data-class="text-center"
-            >
-              <?=$jatbi->lang("Tùy chọn")?>
-            </th>
-          </tr>
-        </thead>
-      </table>
     </div>
-  </div>
-    
+</div> -->
+
+
+
+
+<div class="container">
+    <div class="mb-3 d-flex justify-content-between align-items-center">
+      <div>
+        <h4 class="mb-0 fw-bold text-body"><?=$title?></h4>
+        <ul class="breadcrumb small mb-0">
+          <li class="breadcrumb-item small">
+            <a href="/" class="pjax-load link-secondary"><?=$jatbi->lang("Trang chủ")?></a>
+          </li>
+          <li class="breadcrumb-item small">
+            <a href="/" class="pjax-load link-secondary"><?=$jatbi->lang("Dự án")?></a>
+          </li>
+          <li class="breadcrumb-item small text-body" aria-current="page"><?=$title?></li>
+        </ul>
+      </div>
+      <div class="filter-search">
+        <div class="d-flex align-items-center justify-content-end">
+          <div class="dropdown">
+            <button
+              class="btn btn-primary-light fw-semibold border-0 rounded-pill small d-flex align-items-center"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              data-bs-auto-close="outside"
+            >
+              <i class="ti ti-filter fs-5 me-2"></i><?=$jatbi->lang("Điều kiện lọc")?>
+            </button>
+            <div
+              class="dropdown-menu dropdown-menu-end border-0 shadow-lg rounded-4 min-width bg-blur"
+              style="--min-width: 300px; --min-width-xs: 100vw"
+            >
+              <div class="fw-semibold py-2 px-3"><?=$jatbi->lang("Điều kiện lọc")?></div>
+              <hr class="border-secondary border-opacity-50 my-2" />
+              <div class="px-3">
+                <?=$app->component('select', [
+                    "name" => 'status',
+                    "placeholder" => $jatbi->lang("Trạng thái"),
+                    "selected" => $app->xss($_GET['status'] ?? ''),
+                    "class" => 'filter-name',
+                    "attr" => 'data-width="100%"',
+                    "options" => [
+                        ["value" => "A", "text" => $jatbi->lang("Kích hoạt")],
+                        ["value" => "D", "text" => $jatbi->lang("Không Kích hoạt")],
+                    ]
+                ])?>
+              </div>
+              <hr class="border-secondary border-opacity-50 my-2" />
+              <div class="px-3 py-2 text-end w-100">
+                <button type="button" class="btn btn-light px-3 rounded-pill py-2 reset-filter"><?=$jatbi->lang("Làm mới")?></button>
+                <button type="button" class="btn btn-primary px-3 rounded-pill py-2 button-filter"><?=$jatbi->lang("Tìm")?></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <?php include 'templates/project/projectDetail/menuProjectDetail.html'; ?>
+
+    <div class="card bg-body bg-opacity-50 shadow-sm border-0 rounded-2">
+        <div class="card-body">
+            <h4 class="fw-bold px-3">Khu vực</h4>
+            <div class="custom-buttons d-none">
+                <div class="d-flex align-items-center justify-content-end">
+                    <button class="btn rounded-pill btn-sm btn-primary d-flex align-items-center me-1" data-action="modal" data-url="/project/area-add"><i class="ti ti-plus fs-6 me-1" aria-hidden="true"></i> <?=$jatbi->lang("Thêm")?></button>
+                    <button class="btn rounded-pill btn-sm btn-danger d-flex align-items-center" data-action="modal" data-checkbox="input.checker" data-url="/project/area-deleted"><i class="ti ti-trash fs-6 me-1" aria-hidden="true"></i> <?=$jatbi->lang("Xóa")?></button>
+                </div>
+            </div>
+            <table
+                id="datatable"
+                data-table
+                class="table align-middle"
+                data-type="POST"
+                data-server="true"
+                data-processing="true"
+                data-page-length="10"
+                data-searching="true"
+                data-paging="true"
+                data-state-save="true"
+                style="width: 100%"
+            >
+                <thead>
+                    <tr>
+                        <th data-name="checkbox" data-orderable="false" class="text-nowrap" data-visible="true" data-class="text-center">
+                            <div class="form-check">
+                                <input class="form-check-input checkall" type="checkbox" value="" data-checkbox="input.checker" />
+                            </div>
+                        </th>
+                        <th data-name="id" data-orderable="true" class="text-nowrap" data-visible="false" data-class="text-start"><?=$jatbi->lang("ID")?></th>
+                        <th data-name="name" data-orderable="true" class="text-nowrap" data-visible="true" data-class="text-start"><?=$jatbi->lang("Tên khu vực")?></th>
+                         <th data-name="camera" data-orderable="true" class="text-nowrap" data-visible="true" data-class="text-center"><?=$jatbi->lang("Camera")?></th>
+                        <th data-name="address" data-orderable="true" class="text-nowrap" data-visible="true" data-class="text-start"><?=$jatbi->lang("Địa chỉ")?></th>
+                        <th data-name="code" data-orderable="true" class="text-nowrap" data-visible="true" data-class="text-center"><?=$jatbi->lang("Mã khu vực")?></th>
+                       
+                        <th data-name="is_active" data-orderable="false" class="text-nowrap" data-visible="true" data-class="text-center"><?=$jatbi->lang("Trạng thái")?></th>
+                        <th data-name="action" data-orderable="false" class="text-nowrap" data-visible="true" data-class="text-center"><?=$jatbi->lang("Tùy chọn")?></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
 </div>

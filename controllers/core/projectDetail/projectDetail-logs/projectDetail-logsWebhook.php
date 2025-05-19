@@ -13,7 +13,7 @@ $app->router("/projects/projects-views/logs/logs-webhook", 'GET', function($vars
         "project.startDate",
         "project.endDate",
         "customer.name (customer_name)"
-    ], ["project.id_project" => $id]);
+    ], ["project.id_project" => $id, "project.status" => 'A']);
     $vars['active'] = 'logs'; // Để highlight tab Tổng quan
     $vars['active2'] = 'webhook'; // Để highlight tab Camera
     $vars['id'] = $id;
@@ -50,7 +50,7 @@ $app->router("/projects/projects-views/logs/logs-webhook", 'POST', function($var
     }
 
     // Lấy project.id từ id_project
-    $project = $app->select("project", ["id"], ["id_project" => $id_project]);
+    $project = $app->select("project", ["id"], ["id_project" => $id_project, "status" => 'A']);
     if (!$project || !isset($project[0])) {
         error_log("Error: Project not found for id_project: $id_project");
         echo json_encode([
@@ -58,7 +58,6 @@ $app->router("/projects/projects-views/logs/logs-webhook", 'POST', function($var
             "recordsTotal" => 0,
             "recordsFiltered" => 0,
             "data" => [],
-            "error" => "Project not found"
         ]);
         return;
     }
@@ -69,7 +68,7 @@ $app->router("/projects/projects-views/logs/logs-webhook", 'POST', function($var
     $totalRecords = $app->count("access_events", [
         "[>]camera" => ["deviceKey" => "id"],
         "[>]area" => ["camera.area_id" => "id"]
-    ], "*", ["area.project_id" => $project_id]);
+    ], "*", ["area.project_id" => $project_id, "amera.is_active" => 'A', "area.is_active" => 'A']);
     error_log("Total Records: $totalRecords");
 
     // Xử lý sắp xếp cột
@@ -85,7 +84,10 @@ $app->router("/projects/projects-views/logs/logs-webhook", 'POST', function($var
 
     // Điều kiện (không có tìm kiếm và lọc status)
     $conditions = [
-        "area.project_id" => $project_id
+        "area.project_id" => $project_id,
+        "camera.is_active" => 'A',
+        "area.is_active" => 'A',
+        "project.status" => 'A',
     ];
     // Đếm số bản ghi (recordsFiltered = recordsTotal vì không có tìm kiếm/lọc)
     $filteredRecords = $totalRecords;
