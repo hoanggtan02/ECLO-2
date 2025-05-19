@@ -27,108 +27,7 @@ $app->router("/projects/projects-views/area", 'GET', function($vars) use ($app, 
 })->setPermissions(['project']);
 
 
-
-
-// $app->router("/projects/projects-views/area", 'POST', function($vars) use ($app, $jatbi) {
-//     $app->header([
-//         'Content-Type' => 'application/json',
-//     ]);
-
-//     // Nhận dữ liệu từ DataTable
-//     $draw = isset($_POST['draw']) ? intval($_POST['draw']) : 0;
-//     $start = $_POST['start'] ?? 0;
-//     $length = $_POST['length'] ?? 10;
-//     $searchValue = $_POST['search']['value'] ?? '';
-//     $orderName = isset($_POST['order'][0]['name']) ? $_POST['order'][0]['name'] : 'name';
-//     $orderDir = isset($_POST['order'][0]['dir']) ? $_POST['order'][0]['dir'] : 'DESC';
-
-//     $id_project = $_GET['id'] ?? ''; // Lấy id từ URL
-
-//     // Điều kiện truy vấn
-//     $where = [
-//         "AND" => [
-//             "OR" => [
-//                 "area.id[~]" => $searchValue,
-//                 "area.name[~]" => $searchValue,
-//                 "area.address[~]" => $searchValue,
-//                 "area.code[~]" => $searchValue,
-//             ],
-//             "project.id_project" => $id_project,
-//         ],
-//         "LIMIT" => [$start, $length],
-//         "ORDER" => [$orderName => strtoupper($orderDir)]
-//     ];
-
-//     // Đếm tổng số bản ghi
-//     $count = $app->count("area", [
-//         "[>]project" => ["project_id" => "id"]
-//     ], "*", $where['AND']);
-
-//     // Lấy dữ liệu khu vực
-//     $datas = [];
-//     $app->select("area", [
-//         "[>]project" => ["project_id" => "id"]
-//     ], [
-//         'area.id',
-//         'area.name',
-//         'area.address',
-//         'area.code',
-//         'area.is_active',
-//         'area.created_at',
-//         'project.name_project (project_name)'
-//     ], $where, function ($data) use (&$datas, $jatbi, $app) {
-//         $status = ($data['is_active'] == 'A') ? "Hoạt động" : "Ngừng hoạt động"; // Sử dụng 'A'/'D'
-//         $created_at = !empty($data['created_at']) ? date('d-m-Y H:i:s', strtotime($data['created_at'])) : 'N/A';
-
-//         $datas[] = [
-//             "checkbox" => '<div class="form-check"><input class="form-check-input checker" type="checkbox" value="' . $data['id'] . '"></div>',
-//             "id" => $data['id'],
-//             "name" => $data['name'] ?? 'Unknown',
-//             "project_id" => $data['project_name'] ?? 'Unknown Project',
-//             "address" => $data['address'] ?? 'N/A',
-//             "code" => $data['code'] ?? 'N/A',
-//             "is_active" => $app->component("status", [
-//                 "url" => "/project/area-status/" . $data['id'],
-//                 "data" => $data['is_active'], // Truyền 'A' hoặc 'D'
-//                 "permission" => ['area.edit']
-//             ]),
-//             "created_at" => $created_at,
-//             "action" => $app->component("action", [
-//                 "button" => [
-//                     [
-//                         'type' => 'button',
-//                         'name' => $jatbi->lang("Xem Chi Tiết"),
-//                         'permission' => ['area'],
-//                         'action' => ['data-url' => '/projects/projects-views/area/view-detail?id=' . $data['id'], 'data-action' => 'modal']
-//                     ],
-//                     [
-//                         'type' => 'button',
-//                         'name' => $jatbi->lang("Sửa"),
-//                         'permission' => ['area.edit'], // Sửa lại từ 'project.edit' thành 'area.edit'
-//                         'action' => ['data-url' => '/project/area-edit/' . $data['id'], 'data-action' => 'modal']
-//                     ],
-//                     [
-//                         'type' => 'button',
-//                         'name' => $jatbi->lang("Xóa"),
-//                         'permission' => ['area.delete'], // Sửa lại từ 'project.delete' thành 'area.delete'
-//                         'action' => ['data-url' => '/project/area-delete?box=' . $data['id'], 'data-action' => 'modal']
-//                     ],
-//                 ]
-//             ]),
-//         ];
-//     });
-
-//     // Trả về JSON cho DataTable
-//     echo json_encode([
-//         "draw" => $draw,
-//         "recordsTotal" => $count,
-//         "recordsFiltered" => $count,
-//         "data" => $datas ?? [],
-//     ]);
-// })->setPermissions(['area']);
-
-
-
+// Route xử lý trạng thái khu vực
 $app->router("/project/area-status/{id}", 'POST', function($vars) use ($app, $jatbi) {
     $app->header([
         'Content-Type' => 'application/json',
@@ -272,7 +171,7 @@ $app->router("/projects/projects-views/area", 'POST', function($vars) use ($app,
 
 $app->router("/project/area-add", 'GET', function($vars) use ($app, $jatbi) {
     $vars['title'] = $jatbi->lang("Thêm Khu vực");
-    $id_project = $_GET['id'] ?? ''; // Lấy id_project từ URL
+    $id_project = $_GET['id'] ?? ''; 
     if (empty($id_project)) {
         // Nếu không có id_project, trả về lỗi
         $vars['title'] = $jatbi->lang("Lỗi");
