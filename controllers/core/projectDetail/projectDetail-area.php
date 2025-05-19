@@ -224,7 +224,7 @@ $app->router("/projects/projects-views/area", 'POST', function($vars) use ($app,
         // Tạo nội dung cột Camera (số lượng + liên kết Thêm camera)
         // $camera_content = $camera_count . ' <a href="#" class="text-primary" data-action="modal" data-url="/project/camera-add?area_id=' . $data['id'] . '">Thêm camera</a>';
         $camera_content =   '<div class="row justify-content-between">
-                                <div class="col-1">' . '<a href="/projects/projects-views/camera?id=' . $data['id_project'] .'" class="btn btn-sm text-primary">' . $camera_count . '</a>' . '</div>
+                                <div class="col-1">' . '<a href="/projects/projects-views/camera?id=' . $data['id_project'] . '&area_id=' . $data['id'] . '" class="btn btn-sm text-primary">' . $camera_count . '</a>' . '</div>
                                 <div class="col-8">' . '<a href="#" class="btn btn-outline-primary btn-sm border-0" data-action="modal" data-url="/project/camera-add?area_id=' . $data['id'] . '">Thêm camera</a>' . '</div>
                             </div>';
 

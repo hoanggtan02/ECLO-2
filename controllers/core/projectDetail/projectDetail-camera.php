@@ -39,6 +39,7 @@ $app->router("/projects/projects-views/camera", 'POST', function($vars) use ($ap
     $orderDir = isset($_POST['order'][0]['dir']) ? $_POST['order'][0]['dir'] : 'DESC';
 
     $id = $_GET['id'] ?? '';
+    $area_id = $_GET['area_id'] ?? '';
     // $endDate = isset($_POST['endDate']) ? $_POST['endDate'] : '';
 
     $where = [
@@ -51,6 +52,10 @@ $app->router("/projects/projects-views/camera", 'POST', function($vars) use ($ap
         "LIMIT" => [$start, $length],
         "ORDER" => [$orderName => strtoupper($orderDir)]
     ];
+
+    if($area_id) {
+        $where["AND"]["camera.area_id"] = $area_id;
+    }
     
     $count = $app->count("camera",[
         "AND" => $where['AND'],
