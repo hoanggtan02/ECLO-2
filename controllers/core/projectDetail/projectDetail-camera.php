@@ -69,11 +69,12 @@ $app->router("/projects/projects-views/camera", 'POST', function($vars) use ($ap
         // 'camera.startDate',
         // 'camera.endDate',
         'camera.status',
+        'project.id_project',
     ], $where, function ($data) use (&$datas,$jatbi,$app) {
         $datas[] = [
             "name"          => $data['id'],
             "area"          => $data['area'],
-            "face_count"    => $data['face_count'],
+            "face_count"    => '<a href="/projects/projects-views/face?id=' . $data['id_project'] .'" class="text-primary">' . $data['face_count'] . '</a>',
             "face_type"     => $data['face_type'],
             "device_code"   => $data['device_code'],
             // "startDate" => DateTime::createFromFormat('Y-m-d', $data['startDate'])->format('d-m-Y'),
