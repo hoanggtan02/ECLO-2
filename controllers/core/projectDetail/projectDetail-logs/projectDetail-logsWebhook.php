@@ -85,7 +85,7 @@ $app->router("/projects/projects-views/logs/logs-webhook", 'POST', function($var
     // Điều kiện (không có tìm kiếm và lọc status)
     $conditions = [
         "area.project_id" => $project_id,
-        "camera.is_active" => 'A',
+        "camera.status" => 'A',
         "area.is_active" => 'A',
         "project.status" => 'A',
     ];

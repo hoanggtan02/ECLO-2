@@ -53,7 +53,7 @@ $app->router("/projects/projects-views/logs/logs-camera", 'POST', function($vars
         "[>]area" => ["area_id" => "id"]
     ], "camera.id", [
         "area.project_id" => $project,
-        "camera.is_active" => 'A',
+        "camera.status" => 'A',
         "area.is_active" => 'A',
     ]);
     if (empty($cameraIds)) {
