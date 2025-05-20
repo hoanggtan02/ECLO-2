@@ -111,7 +111,8 @@ $app->router("/projects/projects-views/area", 'POST', function($vars) use ($app,
         'area.code',
         'area.is_active',
         'area.created_at',
-        'project.name_project (project_name)'
+        'project.name_project (project_name)',
+        'project.id_project',
     ], $where, function ($data) use (&$datas, $jatbi, $app) {
         $status = ($data['is_active'] == 'A') ? "Hoạt động" : "Ngừng hoạt động";
         $created_at = !empty($data['created_at']) ? date('d-m-Y H:i:s', strtotime($data['created_at'])) : 'N/A';
@@ -120,7 +121,11 @@ $app->router("/projects/projects-views/area", 'POST', function($vars) use ($app,
         $camera_count = $app->count("camera", ["area_id" => $data['id']]);
 
         // Tạo nội dung cột Camera (số lượng + liên kết Thêm camera)
-        $camera_content = $camera_count . ' <a href="#" class="text-primary" data-action="modal" data-url="/project/camera-add?area_id=' . $data['id'] . '">Thêm camera</a>';
+        // $camera_content = $camera_count . ' <a href="#" class="text-primary" data-action="modal" data-url="/project/camera-add?area_id=' . $data['id'] . '">Thêm camera</a>';
+        $camera_content =   '<div class="row justify-content-between">
+                                <div class="col-1">' . '<a href="/projects/projects-views/camera?id=' . $data['id_project'] . '&area=' . $data['id'] . '" class="btn btn-sm text-primary">' . $camera_count . '</a>' . '</div>
+                                <div class="col-8">' . '<a href="#" class="btn btn-outline-primary btn-sm border-0" data-action="modal" data-url="/project/camera-add?area_id=' . $data['id'] . '">Thêm camera</a>' . '</div>
+                            </div>';
 
         $datas[] = [
             "checkbox" => '<div class="form-check"><input class="form-check-input checker" type="checkbox" value="' . $data['id'] . '"></div>',
@@ -241,3 +246,13 @@ $app->router("/project/area-add", 'POST', function($vars) use ($app, $jatbi) {
         echo json_encode(["status" => "error", "content" => $jatbi->lang("Lỗi server: ") . $e->getMessage()]);
     }
 })->setPermissions(['area.add']);
+
+$app->router("/project/camera-add", 'GET', function($vars) use ($app, $jatbi) {
+    $vars['title'] = $jatbi->lang("Thêm Camera");
+    $vars['customers'] = $app->select("customer","*");
+    $vars['data'] = [
+        "id_customer" => 'A',
+        "status" => 'A',
+    ];
+    echo $app->render('templates/project/projectDetail/cameraAdd-post.html', $vars, 'global');
+})->setPermissions(['project']);

@@ -9,7 +9,7 @@
             >
           </li>
           <li class="breadcrumb-item small">
-            <a href="/" class="pjax-load link-secondary"
+            <a href="/project" class="pjax-load link-secondary"
               ><?=$jatbi->lang("Dự án")?></a
             >
           </li>
@@ -18,7 +18,7 @@
           </li>
         </ul>
       </div>
-      <div class="filter-search">
+      <!-- <div class="filter-search">
         <div class="d-flex align-items-center justify-content-end">
           <div class="dropdown">
             <button
@@ -46,6 +46,14 @@
                 => 'data-width="100%"', "options" => [ ["value" => "A", "text" =>
                 $jatbi->lang("Kích hoạt")], ["value" => "D", "text" =>
                 $jatbi->lang("Không Kích hoạt")], ] ])?>
+                <?=$app->component('select',[
+                  "name"=>'area',
+                  "placeholder"=>$jatbi->lang("Khu vực"),
+                  "selected" => $app->xss($_GET['area'] ?? ''),
+                  "class" => 'filter-name',         
+                  "attr" => 'data-width="100%" multiple data-actions-box="true"',
+                  "options" => $area,
+                ])?>
               </div>
               <hr class="border-secondary border-opacity-50 my-2" />
               <div class="px-3 py-2 text-end w-100">
@@ -65,7 +73,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
     <?php include 'templates/project/projectDetail/menuProjectDetail.html'; ?>
     <div class="card bg-body bg-opacity-50 shadow border-0 rounded-4">
