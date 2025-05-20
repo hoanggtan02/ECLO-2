@@ -173,7 +173,6 @@ $app->router("/project/area-add", 'GET', function($vars) use ($app, $jatbi) {
     $vars['title'] = $jatbi->lang("Thêm Khu vực");
     $id_project = $_GET['id'] ?? ''; 
     if (empty($id_project)) {
-        // Nếu không có id_project, trả về lỗi
         $vars['title'] = $jatbi->lang("Lỗi");
         $vars['error'] = $jatbi->lang("Không tìm thấy dự án.");
         echo $app->render('templates/error.html', $vars, 'global');
@@ -204,25 +203,41 @@ $app->router("/project/area-add", 'POST', function($vars) use ($app, $jatbi) {
         return;
     }
 
-    // Tạo dữ liệu để chèn
+    // Tìm project_id (INT) từ id_project (VARCHAR)
+    $project = $app->select("project", ["id"], ["id_project" => $id_project]);
+    if (!$project || !isset($project[0])) {
+        echo json_encode(["status" => "error", "content" => $jatbi->lang("Dự án không tồn tại với id_project: ") . $id_project]);
+        return;
+    }
+    $project_id = $project[0]['id'];
+
+    // Tạo dữ liệu để chèn (bỏ id vì đã dùng AUTO_INCREMENT)
     $insert = [
-        "id" => $app->getMax("area", "id") + 1,
         "name" => $name,
-        "project_id" => $id_project,
+        "project_id" => $project_id,
         "address" => $address ?: null,
         "is_active" => $status,
         "created_at" => date('Y-m-d H:i:s')
     ];
 
     // Chèn vào cơ sở dữ liệu
-    $app->insert("area", $insert);
+    try {
+        $app->insert("area", $insert);
+        $inserted_id = $app->id();
 
-    // Kiểm tra kết quả
-    if ($app->id()) {
-        $jatbi->logs('area', 'area-add', $insert);
-        echo json_encode(['status' => 'success', 'content' => $jatbi->lang("Thêm khu vực thành công."), 'redirect' => '/projects/projects-views/area?id=' . $id_project]);
-    } else {
-        $jatbi->logs('area', 'area-add-error', ['error' => 'Thêm khu vực thất bại', 'data' => $insert]);
-        echo json_encode(["status" => "error", "content" => $jatbi->lang("Thêm khu vực thất bại.")]);
+        if ($inserted_id) {
+            $jatbi->logs('area', 'area-add', array_merge($insert, ['inserted_id' => $inserted_id]));
+            echo json_encode([
+                'status' => 'success',
+                'content' => $jatbi->lang("Thêm khu vực thành công."),
+                'redirect' => '/projects/projects-views/area?id=' . $id_project
+            ]);
+        } else {
+            $jatbi->logs('area', 'area-add-error', ['error' => 'Thêm khu vực thất bại', 'data' => $insert]);
+            echo json_encode(["status" => "error", "content" => $jatbi->lang("Thêm khu vực thất bại.")]);
+        }
+    } catch (Exception $e) {
+        $jatbi->logs('area', 'area-add-error', ['error' => $e->getMessage(), 'data' => $insert]);
+        echo json_encode(["status" => "error", "content" => $jatbi->lang("Lỗi server: ") . $e->getMessage()]);
     }
 })->setPermissions(['area.add']);
